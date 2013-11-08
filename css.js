@@ -2,6 +2,13 @@ var waitSeconds = 10;
 
 var head = document.getElementsByTagName('head')[0];
 
+// get all link tags in the page
+var links = document.getElementsByTagName('link');
+var linkHrefs = [];
+for (var i = 0; i < links.length; i++) {
+  linkHrefs.push(links[i].href);
+}
+
 var isWebkit = !!window.navigator.userAgent.match(/AppleWebKit\/([^ ;]*)/);
 var webkitLoadCheck = function(link, callback) {
   setTimeout(function() {
@@ -40,5 +47,9 @@ var loadCSS = function(url, callback, errback) {
 
 
 module.exports = function(name, address, fetch, callback, errback) {
+  // dont reload styles loaded in the head
+  for (var i = 0; i < linkHrefs.length; i++)
+    if (address == linkHrefs[i])
+      return callback();
   loadCSS(address, callback, errback);
 }
