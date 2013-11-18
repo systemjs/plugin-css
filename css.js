@@ -1,4 +1,4 @@
-var waitSeconds = 10;
+var waitSeconds = 100;
 
 var head = document.getElementsByTagName('head')[0];
 
