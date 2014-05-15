@@ -23,33 +23,34 @@ var webkitLoadCheck = function(link, callback) {
 
 var noop = function() {}
 
-var loadCSS = function(url, callback, errback) {
-  var timeout = setTimeout(function() {
-    errback('Unable to load CSS');
-  }, waitSeconds * 1000);
-  var _callback = function() {
-    clearTimeout(timeout);
-    link.onload = noop;
-    setTimeout(callback, 7);
-  }
-  var link = document.createElement('link')  ;
-  link.type = 'text/css';
-  link.rel = 'stylesheet';
-  link.href = url;
+var loadCSS = function(url) {
+  return new Promise(function(resolve, reject) {
+    var timeout = setTimeout(function() {
+      reject('Unable to load CSS');
+    }, waitSeconds * 1000);
+    var _callback = function() {
+      clearTimeout(timeout);
+      link.onload = noop;
+      setTimeout(resolve, 7);
+    }
+    var link = document.createElement('link')  ;
+    link.type = 'text/css';
+    link.rel = 'stylesheet';
+    link.href = url;
 
-  if (!isWebkit)
-    link.onload = _callback;
-  else
-    webkitLoadCheck(link, _callback);
+    if (!isWebkit)
+      link.onload = _callback;
+    else
+      webkitLoadCheck(link, _callback);
 
-  head.appendChild(link);
+    head.appendChild(link);
+  });
 }
 
-
-module.exports = function(name, address, fetch, callback, errback) {
+exports.fetch = function(load) {
   // dont reload styles loaded in the head
   for (var i = 0; i < linkHrefs.length; i++)
-    if (address == linkHrefs[i])
+    if (load.address == linkHrefs[i])
       return callback();
-  loadCSS(address, callback, errback);
+  return loadCSS(load.address);
 }
