@@ -51,6 +51,6 @@ exports.fetch = function(load) {
   // dont reload styles loaded in the head
   for (var i = 0; i < linkHrefs.length; i++)
     if (load.address == linkHrefs[i])
-      return callback();
+      return callback('');
   return loadCSS(load.address);
 }
