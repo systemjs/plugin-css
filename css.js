@@ -31,7 +31,9 @@ var loadCSS = function(url) {
     var _callback = function() {
       clearTimeout(timeout);
       link.onload = noop;
-      setTimeout(resolve, 7);
+      setTimeout(function() {
+        resolve('');
+      }, 7);
     }
     var link = document.createElement('link')  ;
     link.type = 'text/css';
@@ -51,6 +53,6 @@ exports.fetch = function(load) {
   // dont reload styles loaded in the head
   for (var i = 0; i < linkHrefs.length; i++)
     if (load.address == linkHrefs[i])
-      return callback('');
+      return '';
   return loadCSS(load.address);
 }
