@@ -1,4 +1,4 @@
-css
-===
+system-css
+==========
 
-JSPM CSS loading plugin
+CSS loading plugin for SystemJS.
