@@ -1,4 +1,5 @@
 var csso = require('csso');
+var fs = require('fs');
 
 function escape(source) {
   return source
@@ -15,17 +16,22 @@ function escape(source) {
 var cssInject = "(function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})";
 
 module.exports = function bundle(loads, opts) {
-  // TODO, option here to output a separate file to opts.outFile.replace(/.js$/, '.css');
-
   if (this.buildCSS === false)
     return '';
-  var cssOutput = csso.justDoIt(loads.reduce(function(loadA, loadB) {
-    return loadA.source + loadB.source;
-  }, { source: '' }));
 
   var stubDefines = loads.map(function(load) {
     return "System\.register('" + load.name + "', [], false, function() {});";
   }).join('\n');
+
+  var cssOutput = csso.justDoIt(loads.reduce(function(loadA, loadB) {
+    return loadA.source + loadB.source;
+  }, { source: '' }));
+
+  // write a separate CSS file if necessary
+  if (this.separateCSS) {
+    fs.writeFileSync(opts.outFile.replace(/\.js$/, '.css'), cssOutput);
+    return stubDefines;
+  }
 
   return [stubDefines, cssInject, "('" + escape(cssOutput) + "')"].join('\n');
 }
