@@ -36,7 +36,7 @@ if (typeof window !== 'undefined') {
           resolve('');
         }, 7);
       }
-      var link = document.createElement('link')  ;
+      var link = document.createElement('link');
       link.type = 'text/css';
       link.rel = 'stylesheet';
       link.href = url;
@@ -59,5 +59,14 @@ if (typeof window !== 'undefined') {
   }
 }
 else {
-  exports.build = false;
+  // setting format = 'defined' means we're managing our own output
+  exports.translate = function(load) {
+    load.metadata.format = 'defined';
+  }
+  exports.bundle = function(loads, opts) {
+    var loader = this;
+    return loader.import('./css-builder', { name: module.id }).then(function(builder) {
+      return builder.call(loader, loads, opts);
+    });
+  }
 }
