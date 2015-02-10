@@ -16,9 +16,6 @@ function escape(source) {
 var cssInject = "(function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})";
 
 module.exports = function bundle(loads, opts) {
-  if (this.buildCSS === false)
-    return '';
-
   var stubDefines = loads.map(function(load) {
     return "System\.register('" + load.name + "', [], false, function() {});";
   }).join('\n');

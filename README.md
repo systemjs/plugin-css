@@ -1,7 +1,7 @@
 css
 ===
 
-JSPM CSS loading plugin
+CSS loading plugin
 
 Basic Use
 ---
@@ -9,6 +9,10 @@ Basic Use
 ```javascript
 import './style.css!'
 ```
+
+Currently CSS bundling is only supported in jspm, please post an issue if you would like support outside of jspm.
+
+If not using jspm, set `System.buildCSS = false` to disable the builds.
 
 Modular CSS Concepts
 ---
@@ -39,7 +43,7 @@ To alter this behaviour use the SystemJS configuration options:
     // additional config can also be set through `builder.config`
     builder.config({
       baseURL: 'file:' + process.cwd(),
-      // buildCSS: false,
+      buildCSS: true,
       separateCSS: true
     });
 
