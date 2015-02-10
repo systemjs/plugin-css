@@ -3,6 +3,13 @@ css
 
 JSPM CSS loading plugin
 
+Basic Use
+---
+
+```javascript
+import './style.css!'
+```
+
 Modular CSS Concepts
 ---
 
