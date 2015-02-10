@@ -1,4 +1,4 @@
-var csso = require('csso');
+var CleanCSS = require('clean-css');
 var fs = require('fs');
 
 function escape(source) {
@@ -23,9 +23,9 @@ module.exports = function bundle(loads, opts) {
     return "System\.register('" + load.name + "', [], false, function() {});";
   }).join('\n');
 
-  var cssOutput = csso.justDoIt(loads.reduce(function(loadA, loadB) {
+  var cssOutput = new CleanCSS().minify(loads.reduce(function(loadA, loadB) {
     return loadA.source + loadB.source;
-  }, { source: '' }));
+  }, { source: '' })).styles;
 
   // write a separate CSS file if necessary
   if (this.separateCSS) {
