@@ -3,6 +3,13 @@ css
 
 JSPM CSS loading plugin
 
+Modular CSS Concepts
+---
+
+CSS in the dependency tree implies a CSS modularisation where styles can be scoped directly to the render code that they are bundled with.
+
+Just like JS requires, the order of CSS injection can't be guaranteed. The idea here is that whenever there are style overrides, they should be based on using a more specific selector with an extra id or class at the base, and not assuming a CSS load order. Reset and global styles are a repeated dependency of all modular styles that build on top of them.
+
 Builder Support
 ---
 
