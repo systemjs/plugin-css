@@ -20,9 +20,11 @@ module.exports = function bundle(loads, opts) {
     return "System\.register('" + load.name + "', [], false, function() {});";
   }).join('\n');
 
-  var cssOutput = new CleanCSS().minify(loads.reduce(function(loadA, loadB) {
-    return loadA.source + loadB.source;
-  }, { source: '' })).styles;
+  var cssOutput = new CleanCSS().minify(loads.map(function(load) {
+    return load.source;
+  }).reduce(function(sourceA, sourceB) {
+    return sourceA + sourceB;
+  }, '')).styles;
 
   // write a separate CSS file if necessary
   if (this.separateCSS) {
