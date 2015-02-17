@@ -1,5 +1,6 @@
 var CleanCSS = require('clean-css');
 var fs = require('fs');
+var path = require('path');
 
 function escape(source) {
   return source
@@ -20,11 +21,14 @@ module.exports = function bundle(loads, opts) {
     return "System\.register('" + load.name + "', [], false, function() {});";
   }).join('\n');
 
-  var cssOutput = new CleanCSS().minify(loads.map(function(load) {
-    return load.source;
-  }).reduce(function(sourceA, sourceB) {
-    return sourceA + sourceB;
-  }, '')).styles;
+  var cssOutput = loads.map(function(load) {
+    return new CleanCSS({
+      target: this.separateCSS ? opts.outFile : '.',
+      relativeTo: path.dirname(load.address.substring('file:'.length)),
+    }).minify(load.source).styles;
+  }).reduce(function(s1, s2) {
+    return s1 + s2;
+  }, '');
 
   // write a separate CSS file if necessary
   if (this.separateCSS) {
