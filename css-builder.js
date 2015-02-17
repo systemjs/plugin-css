@@ -1,5 +1,6 @@
 var CleanCSS = require('clean-css');
 var fs = require('fs');
+var path = require('path');
 
 function escape(source) {
   return source
@@ -23,7 +24,7 @@ module.exports = function bundle(loads, opts) {
   var cssOutput = loads.map(function(load) {
     return new CleanCSS({
       target: opts.outFile,
-      relativeTo: load.address.substring('file:'.length),
+      relativeTo: path.dirname(load.address.substring('file:'.length)),
     }).minify(load.source).styles;
   }).reduce(function(s1, s2) {
     return s1 + s2;
