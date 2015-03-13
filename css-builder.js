@@ -20,19 +20,33 @@ module.exports = function bundle(loads, opts) {
   var stubDefines = loads.map(function(load) {
     return "System\.register('" + load.name + "', [], false, function() {});";
   }).join('\n');
+  
+  var cleanCss = new CleanCSS({
+    target: this.separateCSS ? opts.outFile : '.',
+    relativeTo: path.dirname(opts.config.baseURL),
+    sourceMap: opts.sourceMaps
+  }).minify(loads.map(function(load) {
+    return load.address.substring('file:'.length);
+  }));
 
-  var cssOutput = loads.map(function(load) {
-    return new CleanCSS({
-      target: this.separateCSS ? opts.outFile : '.',
-      relativeTo: path.dirname(load.address.substring('file:'.length)),
-    }).minify(load.source).styles;
-  }).reduce(function(s1, s2) {
-    return s1 + s2;
-  }, '');
+  if (cleanCss.errors.length) {
+    var msg = "plugin-css\n" + cleanCss.errors.join('\n');
+    throw new Error(msg);
+  }
+
+  var cssOutput = cleanCss.styles;
+  var outputFilename = opts.outFile.replace(/\.js$/, '.css');
+
+  // write a separate CSS source map file if necessary
+  if (opts.sourceMaps && this.separateCSS) {
+    var sourceMapOutput = cleanCss.sourceMap.toString();
+    cssOutput += '/*# sourceMappingURL=' + path.basename(outputFilename) + '.map*/';
+    fs.writeFileSync(outputFilename + '.map', sourceMapOutput);
+  }
 
   // write a separate CSS file if necessary
   if (this.separateCSS) {
-    fs.writeFileSync(opts.outFile.replace(/\.js$/, '.css'), cssOutput);
+    fs.writeFileSync(outputFilename, cssOutput);
     return stubDefines;
   }
 
