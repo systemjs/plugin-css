@@ -17,14 +17,22 @@ function escape(source) {
 var cssInject = "(function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})";
 
 module.exports = function bundle(loads, opts) {
+
+  var loader = this;
+
   var stubDefines = loads.map(function(load) {
     return "System\.register('" + load.name + "', [], false, function() {});";
   }).join('\n');
 
   var cssOutput = loads.map(function(load) {
+
+    var cssFile = load.address.substring('file:'.length),
+      root = loader.baseURL.substring('file:'.length);
+
     return new CleanCSS({
       target: this.separateCSS ? opts.outFile : '.',
-      relativeTo: path.dirname(load.address.substring('file:'.length)),
+      relativeTo: path.dirname(cssFile),
+      root: root
     }).minify(load.source).styles;
   }).reduce(function(s1, s2) {
     return s1 + s2;
