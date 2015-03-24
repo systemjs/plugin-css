@@ -27,7 +27,7 @@ module.exports = function bundle(loads, opts) {
   var cssOutput = loads.map(function(load) {
 
     var cssFile = load.address.substring('file:'.length),
-      root = (loader.rootURL || baseURL).substring('file:'.length);
+      root = (loader.rootURL || loader.baseURL).substring('file:'.length);
 
     return new CleanCSS({
       target: this.separateCSS ? opts.outFile : '.',
