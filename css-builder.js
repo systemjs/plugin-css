@@ -25,14 +25,10 @@ module.exports = function bundle(loads, opts) {
   }).join('\n');
 
   var cssOutput = loads.map(function(load) {
-
-    var cssFile = load.address.substring('file:'.length),
-      root = (loader.rootURL || loader.baseURL).substring('file:'.length);
-
     return new CleanCSS({
       target: loader.separateCSS ? opts.outFile : '.',
-      relativeTo: path.dirname(cssFile),
-      root: loader.separateCSS ? undefined : root
+      relativeTo: path.dirname(load.address.substring('file:'.length)),
+      root: loader.rootURL && loader.rootURL.substring('file:'.length)
     }).minify(load.source).styles;
   }).reduce(function(s1, s2) {
     return s1 + s2;
