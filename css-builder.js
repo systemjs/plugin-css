@@ -30,16 +30,16 @@ module.exports = function bundle(loads, opts) {
       root = (loader.rootURL || loader.baseURL).substring('file:'.length);
 
     return new CleanCSS({
-      target: this.separateCSS ? opts.outFile : '.',
+      target: loader.separateCSS ? opts.outFile : '.',
       relativeTo: path.dirname(cssFile),
-      root: root
+      root: loader.separateCSS ? undefined : root
     }).minify(load.source).styles;
   }).reduce(function(s1, s2) {
     return s1 + s2;
   }, '');
 
   // write a separate CSS file if necessary
-  if (this.separateCSS) {
+  if (loader.separateCSS) {
     fs.writeFileSync(opts.outFile.replace(/\.js$/, '.css'), cssOutput);
     return stubDefines;
   }
