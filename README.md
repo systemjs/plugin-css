@@ -52,3 +52,11 @@ To alter this behaviour use the SystemJS configuration options:
 ```
 
 Will generate `bundle.js` containing the JS files and `bundle.css` containing the compressed CSS for the bundle.
+
+### Source Maps
+
+CSS source maps are supported when using the `separateCSS` output option.
+
+### License
+
+MIT
