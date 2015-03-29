@@ -59,8 +59,11 @@ if (typeof window !== 'undefined') {
   }
 }
 else {
-  // setting format = 'defined' means we're managing our own output
   exports.translate = function(load) {
+    // individually mark loads as not built for buildCSS false
+    if (this.buildCSS === false)
+      load.metadata.build = false;
+    // setting format = 'defined' means we're managing our own output
     load.metadata.format = 'defined';
   }
   exports.bundle = function(loads, opts) {
