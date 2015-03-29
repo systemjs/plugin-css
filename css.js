@@ -59,12 +59,14 @@ if (typeof window !== 'undefined') {
   }
 }
 else {
-  exports.translate = function(load) {
+  exports.fetch = function(load) {
     // individually mark loads as not built for buildCSS false
     if (this.buildCSS === false)
       load.metadata.build = false;
     // setting format = 'defined' means we're managing our own output
     load.metadata.format = 'defined';
+    // don't load the CSS at all until build time
+    return '';
   }
   exports.bundle = function(loads, opts) {
     var loader = this;

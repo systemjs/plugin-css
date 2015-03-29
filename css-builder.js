@@ -24,19 +24,32 @@ module.exports = function bundle(loads, opts) {
     return "System\.register('" + load.name + "', [], false, function() {});";
   }).join('\n');
 
-  var cssOutput = loads.map(function(load) {
-    return new CleanCSS({
-      target: loader.separateCSS ? opts.outFile : '.',
-      relativeTo: path.dirname(load.address.substring('file:'.length)),
-      root: loader.rootURL && loader.rootURL.substring('file:'.length)
-    }).minify(load.source).styles;
-  }).reduce(function(s1, s2) {
-    return s1 + s2;
-  }, '');
+  var rootURL = (loader.rootURL || loader.baseURL).substr('file:'.length);
+
+  var cleanCSS = new CleanCSS({
+    target: loader.separateCSS ? opts.outFile : rootURL,
+    relativeTo: rootURL,
+    sourceMap: opts.sourceMaps
+  }).minify(loads.map(function(load) {
+    return load.address.substr('file:'.length);
+  }));
+
+  if (cleanCSS.errors.length)
+    throw new Error('CSS Plugin:\n' + cleanCSS.errors.join('\n'));
+
+  var cssOutput = cleanCSS.styles;
 
   // write a separate CSS file if necessary
   if (loader.separateCSS) {
-    fs.writeFileSync(opts.outFile.replace(/\.js$/, '.css'), cssOutput);
+    var outFile = opts.outFile.replace(/\.js$/, '.css');
+
+    if (opts.sourceMaps) {
+      fs.writeFileSync(outFile + '.map', cleanCSS.sourceMap.toString());
+      cssOutput += '/*# sourceMappingURL=' + path.basename(outFile) + '.map*/';
+    }
+
+    fs.writeFileSync(outFile, cssOutput);
+
     return stubDefines;
   }
 
