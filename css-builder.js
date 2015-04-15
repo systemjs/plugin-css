@@ -24,7 +24,7 @@ module.exports = function bundle(loads, opts) {
     return "System\.register('" + load.name + "', [], false, function() {});";
   }).join('\n');
 
-  var rootURL = (loader.rootURL || loader.baseURL).substr('file:'.length);
+  var rootURL = loader.rootURL || loader.baseURL.substr('file:'.length);
 
   var cleanCSS = new CleanCSS({
     target: loader.separateCSS ? opts.outFile : rootURL,
