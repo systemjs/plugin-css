@@ -29,7 +29,8 @@ module.exports = function bundle(loads, opts) {
   var cleanCSS = new CleanCSS({
     target: loader.separateCSS ? opts.outFile : rootURL,
     relativeTo: rootURL,
-    sourceMap: opts.sourceMaps
+    sourceMap: !!opts.sourceMaps,
+    sourceMapInlineSources: opts.sourceMapContents
   }).minify(loads.map(function(load) {
     return load.address.substr('file:'.length);
   }));
@@ -54,4 +55,4 @@ module.exports = function bundle(loads, opts) {
   }
 
   return [stubDefines, cssInject, '("' + escape(cssOutput) + '");'].join('\n');
-}
+};
