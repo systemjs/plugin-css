@@ -54,4 +54,4 @@ module.exports = function bundle(loads, opts) {
   }
 
   return [stubDefines, cssInject, '("' + escape(cssOutput) + '");'].join('\n');
-}
+};

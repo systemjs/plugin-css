@@ -1,15 +1,15 @@
 if (typeof window !== 'undefined') {
   var waitSeconds = 100;
-  
+
   var head = document.getElementsByTagName('head')[0];
-  
+
   // get all link tags in the page
   var links = document.getElementsByTagName('link');
   var linkHrefs = [];
   for (var i = 0; i < links.length; i++) {
     linkHrefs.push(links[i].href);
   }
-  
+
   var isWebkit = !!window.navigator.userAgent.match(/AppleWebKit\/([^ ;]*)/);
   var webkitLoadCheck = function(link, callback) {
     setTimeout(function() {
@@ -20,10 +20,10 @@ if (typeof window !== 'undefined') {
       }
       webkitLoadCheck(link, callback);
     }, 10);
-  }
-  
-  var noop = function() {}
-  
+  };
+
+  var noop = function() {};
+
   var loadCSS = function(url) {
     return new Promise(function(resolve, reject) {
       var timeout = setTimeout(function() {
@@ -35,28 +35,28 @@ if (typeof window !== 'undefined') {
         setTimeout(function() {
           resolve('');
         }, 7);
-      }
+      };
       var link = document.createElement('link');
       link.type = 'text/css';
       link.rel = 'stylesheet';
       link.href = url;
-  
+
       if (!isWebkit)
         link.onload = _callback;
       else
         webkitLoadCheck(link, _callback);
-  
+
       head.appendChild(link);
     });
-  }
-  
+  };
+
   exports.fetch = function(load) {
     // dont reload styles loaded in the head
     for (var i = 0; i < linkHrefs.length; i++)
       if (load.address == linkHrefs[i])
         return '';
     return loadCSS(load.address);
-  }
+  };
 }
 else {
   exports.fetch = function(load) {
@@ -67,7 +67,7 @@ else {
     load.metadata.format = 'defined';
     // don't load the CSS at all until build time
     return '';
-  }
+  };
   exports.bundle = function(loads, opts) {
     var loader = this;
     if (loader.buildCSS === false)
@@ -75,5 +75,5 @@ else {
     return loader.import('./css-builder', { name: module.id }).then(function(builder) {
       return builder.call(loader, loads, opts);
     });
-  }
+  };
 }
