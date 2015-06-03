@@ -14,6 +14,15 @@ function escape(source) {
     .replace(/[\u2029]/g, "\\u2029");
 }
 
+function fromFileURL(address) {
+  address = address.replace(/^file:\/+/, '');
+
+  if (!process.platform.match(/^win/))
+    address = '/' + address;
+
+  return address.replace(/\//g, path.sep); 
+}
+
 var cssInject = "(function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})";
 
 module.exports = function bundle(loads, opts) {
@@ -24,16 +33,14 @@ module.exports = function bundle(loads, opts) {
     return "System\.register('" + load.name + "', [], false, function() {});";
   }).join('\n');
 
-  var rootURL = loader.rootURL || loader.baseURL.substr('file:'.length);
+  var rootURL = loader.rootURL || fromFileURL(loader.baseURL)
 
   var cleanCSS = new CleanCSS({
     target: loader.separateCSS ? opts.outFile : rootURL,
     relativeTo: rootURL,
     sourceMap: !!opts.sourceMaps,
     sourceMapInlineSources: opts.sourceMapContents
-  }).minify(loads.map(function(load) {
-    return load.address.substr('file:'.length);
-  }));
+  }).minify(loads.map(fromFileURL));
 
   if (cleanCSS.errors.length)
     throw new Error('CSS Plugin:\n' + cleanCSS.errors.join('\n'));
