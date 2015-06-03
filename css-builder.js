@@ -40,7 +40,9 @@ module.exports = function bundle(loads, opts) {
     relativeTo: rootURL,
     sourceMap: !!opts.sourceMaps,
     sourceMapInlineSources: opts.sourceMapContents
-  }).minify(loads.map(fromFileURL));
+  }).minify(loads.map(function(load) {
+    return fromFileURL(load.address) 
+  }));
 
   if (cleanCSS.errors.length)
     throw new Error('CSS Plugin:\n' + cleanCSS.errors.join('\n'));

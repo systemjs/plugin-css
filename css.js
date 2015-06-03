@@ -29,23 +29,30 @@ if (typeof window !== 'undefined') {
       var timeout = setTimeout(function() {
         reject('Unable to load CSS');
       }, waitSeconds * 1000);
-      var _callback = function() {
+      var _callback = function(error) {
         clearTimeout(timeout);
-        link.onload = noop;
+        link.onload = link.onerror = noop;
         setTimeout(function() {
-          resolve('');
+          if (error)
+            reject(error);
+          else
+            resolve('');
         }, 7);
       };
       var link = document.createElement('link');
       link.type = 'text/css';
       link.rel = 'stylesheet';
       link.href = url;
-
-      if (!isWebkit)
-        link.onload = _callback;
-      else
+      if (!isWebkit) {
+        link.onload = function() {
+          _callback();
+        }
+        link.onerror = function(event) {
+          _callback(event.error);
+        }
+      } else {
         webkitLoadCheck(link, _callback);
-
+      }
       head.appendChild(link);
     });
   };
