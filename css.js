@@ -75,6 +75,7 @@ else {
     // don't load the CSS at all until build time
     return '';
   };
+  exports.instantiate = function() {};
   exports.bundle = function(loads, opts) {
     var loader = this;
     if (loader.buildCSS === false)
