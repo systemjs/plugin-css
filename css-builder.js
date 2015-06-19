@@ -15,7 +15,7 @@ function escape(source) {
 }
 
 function fromFileURL(address) {
-  address = address.replace(/^file:\/+/, '');
+  address = address.replace(/^file:(\/+)?/i, '');
 
   if (!process.platform.match(/^win/))
     address = '/' + address;
