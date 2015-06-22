@@ -1,6 +1,7 @@
 var CleanCSS = require('clean-css');
-var fs = require('fs');
-var path = require('path');
+
+// it's bad to do this in general, as code is now heavily environment specific
+var fs = System._nodeRequire('fs');
 
 function escape(source) {
   return source
@@ -14,13 +15,17 @@ function escape(source) {
     .replace(/[\u2029]/g, "\\u2029");
 }
 
+var isWin = process.platform.match(/^win/);
+
 function fromFileURL(address) {
   address = address.replace(/^file:(\/+)?/i, '');
 
-  if (!process.platform.match(/^win/))
+  if (!isWin)
     address = '/' + address;
+  else
+    address = address.replace(/\//g, '\\');
 
-  return address.replace(/\//g, path.sep); 
+  return address;
 }
 
 var cssInject = "(function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})";
@@ -33,9 +38,17 @@ module.exports = function bundle(loads, opts) {
     return "System\.register('" + load.name + "', [], false, function() {});";
   }).join('\n');
 
-  var rootURL = loader.rootURL || fromFileURL(loader.baseURL)
+  var rootURL = loader.rootURL || fromFileURL(loader.baseURL);
+
+  var cssOptimizations = opts.cssOptimizations !== false;
 
   var cleanCSS = new CleanCSS({
+    advanced: cssOptimizations,
+    agressiveMerging: cssOptimizations,
+    mediaMerging: cssOptimizations,
+    restructuring: cssOptimizations,
+    shorthandCompacting: cssOptimizations,
+
     target: loader.separateCSS ? opts.outFile : rootURL,
     relativeTo: rootURL,
     sourceMap: !!opts.sourceMaps,
@@ -55,7 +68,7 @@ module.exports = function bundle(loads, opts) {
 
     if (opts.sourceMaps) {
       fs.writeFileSync(outFile + '.map', cleanCSS.sourceMap.toString());
-      cssOutput += '/*# sourceMappingURL=' + path.basename(outFile) + '.map*/';
+      cssOutput += '/*# sourceMappingURL=' + outFile.split(isWin ? '\\' : '/').pop() + '.map*/';
     }
 
     fs.writeFileSync(outFile, cssOutput);
