@@ -1,9 +1,4 @@
 {
   "main": "css",
-  "registry": "jspm",
-  "dependencies": {
-    "clean-css": "npm:clean-css@~3.1.8",
-    "fs": "^0.1.1",
-    "path": "^0.1.0"
-  }
+  "registry": "jspm"
 }
