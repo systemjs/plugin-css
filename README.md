@@ -47,7 +47,7 @@ To alter this behaviour use the SystemJS configuration options:
       rootURL: 'file:' + process.cwd(),
 
       // to disable css optimizations
-      // cssOptimizations: false
+      // cssOptimize: false
     });
 
     return builder.build('myModule', 'bundle.js');

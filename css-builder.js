@@ -40,14 +40,14 @@ module.exports = function bundle(loads, opts) {
 
   var rootURL = loader.rootURL || fromFileURL(loader.baseURL);
 
-  var cssOptimizations = opts.cssOptimizations !== false;
+  var cssOptimize = opts.cssOptimize !== false;
 
   var cleanCSS = new CleanCSS({
-    advanced: cssOptimizations,
-    agressiveMerging: cssOptimizations,
-    mediaMerging: cssOptimizations,
-    restructuring: cssOptimizations,
-    shorthandCompacting: cssOptimizations,
+    advanced: cssOptimize,
+    agressiveMerging: cssOptimize,
+    mediaMerging: cssOptimize,
+    restructuring: cssOptimize,
+    shorthandCompacting: cssOptimize,
 
     target: loader.separateCSS ? opts.outFile : rootURL,
     relativeTo: rootURL,
