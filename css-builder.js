@@ -40,7 +40,7 @@ module.exports = function bundle(loads, opts) {
 
   var rootURL = loader.rootURL || fromFileURL(loader.baseURL);
 
-  var cssOptimize = opts.cssOptimize !== false;
+  var cssOptimize = opts.minify && opts.cssOptimize !== false;
 
   var cleanCSS = new CleanCSS({
     advanced: cssOptimize,
