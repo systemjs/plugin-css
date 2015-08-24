@@ -41,6 +41,8 @@ module.exports = function bundle(loads, opts) {
   var rootURL = loader.rootURL || fromFileURL(loader.baseURL);
 
   var cssOptimize = opts.minify && opts.cssOptimize !== false;
+  
+  var outFile = loader.separateCSS ? opts.outFile.replace(/\.js$/, '.css') : rootURL;
 
   var cleanCSS = new CleanCSS({
     advanced: cssOptimize,
@@ -49,7 +51,7 @@ module.exports = function bundle(loads, opts) {
     restructuring: cssOptimize,
     shorthandCompacting: cssOptimize,
 
-    target: loader.separateCSS ? opts.outFile : rootURL,
+    target: outFile,
     relativeTo: rootURL,
     sourceMap: !!opts.sourceMaps,
     sourceMapInlineSources: opts.sourceMapContents
@@ -64,8 +66,6 @@ module.exports = function bundle(loads, opts) {
 
   // write a separate CSS file if necessary
   if (loader.separateCSS) {
-    var outFile = opts.outFile.replace(/\.js$/, '.css');
-
     if (opts.sourceMaps) {
       fs.writeFileSync(outFile + '.map', cleanCSS.sourceMap.toString());
       cssOutput += '/*# sourceMappingURL=' + outFile.split(isWin ? '\\' : '/').pop() + '.map*/';
