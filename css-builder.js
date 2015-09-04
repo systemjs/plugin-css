@@ -68,7 +68,7 @@ module.exports = function bundle(loads, opts) {
   if (loader.separateCSS) {
     if (opts.sourceMaps) {
       fs.writeFileSync(outFile + '.map', cleanCSS.sourceMap.toString());
-      cssOutput += '/*# sourceMappingURL=' + outFile.split(isWin ? '\\' : '/').pop() + '.map*/';
+      cssOutput += '/*# sourceMappingURL=' + outFile.split(/[\\/]/).pop() + '.map*/';
     }
 
     fs.writeFileSync(outFile, cssOutput);
