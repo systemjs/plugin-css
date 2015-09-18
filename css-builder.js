@@ -32,7 +32,7 @@ var cssInject = "(function(c){if (typeof document == 'undefined') return; var d=
 
 module.exports = function bundle(loads, compileOpts, outputOpts) {
   // SystemJS Builder 0.14 will write the stubs for use, we detect by the 3 argument over 2 argument bundle call
-  var writeStubs = typeof outputOpts != 'undefined';
+  var writeStubs = typeof outputOpts == 'undefined';
   outputOpts = outputOpts || compileOpts;
 
   var loader = this;
