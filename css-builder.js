@@ -38,7 +38,7 @@ module.exports = function bundle(loads, compileOpts, outputOpts) {
   var loader = this;
 
   var stubDefines = writeStubs ? loads.map(function(load) {
-    return (compileoutputOpts.systemGlobal || 'System') + ".register('" + load.name + "', [], false, function() {});";
+    return (compileOpts.systemGlobal || 'System') + ".register('" + load.name + "', [], false, function() {});";
   }).join('\n') : [];
 
   var rootURL = loader.rootURL || fromFileURL(loader.baseURL);
