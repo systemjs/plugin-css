@@ -47,12 +47,12 @@ if (typeof window !== 'undefined') {
         link.onload = function() {
           _callback();
         }
-        link.onerror = function(event) {
-          _callback(event.error);
-        }
       } else {
         webkitLoadCheck(link, _callback);
       }
+      link.onerror = function(event) {
+        _callback(event.error || new Error('Error loading CSS file.'));
+      };
       head.appendChild(link);
     });
   };
