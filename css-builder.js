@@ -1,5 +1,3 @@
-var CleanCSS = require('clean-css');
-
 // it's bad to do this in general, as code is now heavily environment specific
 var fs = System._nodeRequire('fs');
 
@@ -31,53 +29,57 @@ function fromFileURL(address) {
 var cssInject = "(function(c){if (typeof document == 'undefined') return; var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})";
 
 module.exports = function bundle(loads, compileOpts, outputOpts) {
-  // SystemJS Builder 0.14 will write the stubs for use, we detect by the 3 argument over 2 argument bundle call
-  var writeStubs = typeof outputOpts == 'undefined';
-  outputOpts = outputOpts || compileOpts;
-
   var loader = this;
 
-  var stubDefines = writeStubs ? loads.map(function(load) {
-    return (compileOpts.systemGlobal || 'System') + ".register('" + load.name + "', [], false, function() {});";
-  }).join('\n') : [];
+  return loader['import']('clean-css').then(function(CleanCSS) {
+    // SystemJS Builder 0.14 will write the stubs for use, we detect by the 3 argument over 2 argument bundle call
+    var writeStubs = typeof outputOpts == 'undefined';
+    outputOpts = outputOpts || compileOpts;
 
-  var rootURL = loader.rootURL || fromFileURL(loader.baseURL);
+    var stubDefines = writeStubs ? loads.map(function(load) {
+      return (compileOpts.systemGlobal || 'System') + ".register('" + load.name + "', [], false, function() {});";
+    }).join('\n') : [];
 
-  var cssOptimize = outputOpts.minify && outputOpts.cssOptimize !== false;
-  
-  var outFile = loader.separateCSS ? outputOpts.outFile.replace(/\.js$/, '.css') : rootURL;
+    var rootURL = loader.rootURL || fromFileURL(loader.baseURL);
 
-  var cleanCSS = new CleanCSS({
-    advanced: cssOptimize,
-    agressiveMerging: cssOptimize,
-    mediaMerging: cssOptimize,
-    restructuring: cssOptimize,
-    shorthandCompacting: cssOptimize,
+    var cssOptimize = outputOpts.minify && outputOpts.cssOptimize !== false;
+    
+    var outFile = loader.separateCSS ? outputOpts.outFile.replace(/\.js$/, '.css') : rootURL;
 
-    target: outFile,
-    relativeTo: rootURL,
-    sourceMap: !!outputOpts.sourceMaps,
-    sourceMapInlineSources: outputOpts.sourceMapContents
-  }).minify(loads.map(function(load) {
-    return fromFileURL(load.address) 
-  }));
+    var cleanCSS = new CleanCSS({
+      advanced: cssOptimize,
+      agressiveMerging: cssOptimize,
+      mediaMerging: cssOptimize,
+      restructuring: cssOptimize,
+      shorthandCompacting: cssOptimize,
 
-  if (cleanCSS.errors.length)
-    throw new Error('CSS Plugin:\n' + cleanCSS.errors.join('\n'));
+      target: outFile,
+      relativeTo: rootURL,
+      sourceMap: !!outputOpts.sourceMaps,
+      sourceMapInlineSources: outputOpts.sourceMapContents
+    }).minify(loads.map(function(load) {
+      return fromFileURL(load.address) 
+    }));
 
-  var cssOutput = cleanCSS.styles;
+    if (cleanCSS.errors.length)
+      throw new Error('CSS Plugin:\n' + cleanCSS.errors.join('\n'));
 
-  // write a separate CSS file if necessary
-  if (loader.separateCSS) {
-    if (outputOpts.sourceMaps) {
-      fs.writeFileSync(outFile + '.map', cleanCSS.sourceMap.toString());
-      cssOutput += '/*# sourceMappingURL=' + outFile.split(/[\\/]/).pop() + '.map*/';
+    var cssOutput = cleanCSS.styles;
+
+    // write a separate CSS file if necessary
+    if (loader.separateCSS) {
+      if (outputOpts.sourceMaps) {
+        fs.writeFileSync(outFile + '.map', cleanCSS.sourceMap.toString());
+        cssOutput += '/*# sourceMappingURL=' + outFile.split(/[\\/]/).pop() + '.map*/';
+      }
+
+      fs.writeFileSync(outFile, cssOutput);
+
+      return stubDefines;
     }
 
-    fs.writeFileSync(outFile, cssOutput);
-
-    return stubDefines;
-  }
-
-  return [stubDefines, cssInject, '("' + escape(cssOutput) + '");'].join('\n');
+    return [stubDefines, cssInject, '("' + escape(cssOutput) + '");'].join('\n');
+  }, function() {
+    throw new Error('Install Clean CSS via `jspm install npm:clean-css --dev` for CSS build support. Set System.buildCSS = false to skip CSS builds.');
+  });
 };

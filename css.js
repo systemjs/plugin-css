@@ -82,8 +82,6 @@ else {
       return '';
     return loader['import']('./css-builder', { name: module.id }).then(function(builder) {
       return builder.call(loader, loads, opts);
-    }, function() {
-      throw new Error('Install Clean CSS via `jspm install npm:clean-css` for CSS build support. Set System.buildCSS = false to skip CSS builds.');
     });
   };
 }
