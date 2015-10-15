@@ -34,7 +34,7 @@ exports.listAssets = function(loads, compileOpts, outputOpts) {
       url: load.address,
       source: null,
       sourceMap: null,
-      contentType: 'text/css'
+      type: 'css'
     };
   });
 };
