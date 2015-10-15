@@ -67,7 +67,7 @@ if (typeof window !== 'undefined') {
 }
 else {
   function getBuilder(loader) {
-    return loader['import']('./css-builder', { name: module.id });
+    return loader['import']('./css-builder.js', { name: module.id });
   }
 
   exports.cssPlugin = true;
