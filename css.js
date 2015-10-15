@@ -66,7 +66,7 @@ if (typeof window !== 'undefined') {
   };
 }
 else {
-  function getBuilder() {
+  function getBuilder(loader) {
     return loader['import']('./css-builder', { name: module.id });
   }
 
@@ -85,12 +85,13 @@ else {
     var loader = this;
     if (loader.buildCSS === false)
       return '';
-    return getBuilder().then(function(builder) {
+    return getBuilder(loader).then(function(builder) {
       return builder.bundle.call(loader, loads, opts);
     });
   };
   exports.listAssets = function(loads, compileOpts, outputOpts) {
-    return getBuilder().then(function(builder) {
+    var loader = this;
+    return getBuilder(loader).then(function(builder) {
       return builder.listAssets.call(loader, loads, compileOpts, outputOpts);
     });
   };
