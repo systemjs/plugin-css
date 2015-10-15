@@ -28,7 +28,18 @@ function fromFileURL(address) {
 
 var cssInject = "(function(c){if (typeof document == 'undefined') return; var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})";
 
-module.exports = function bundle(loads, compileOpts, outputOpts) {
+exports.listAssets = function(loads, compileOpts, outputOpts) {
+  return loads.map(function(load) {
+    return {
+      url: load.address,
+      source: null,
+      sourceMap: null,
+      contentType: 'text/css'
+    };
+  });
+};
+
+exports.bundle = function(loads, compileOpts, outputOpts) {
   var loader = this;
 
   return loader['import']('clean-css').then(function(CleanCSS) {
@@ -58,7 +69,7 @@ module.exports = function bundle(loads, compileOpts, outputOpts) {
       sourceMap: !!outputOpts.sourceMaps,
       sourceMapInlineSources: outputOpts.sourceMapContents
     }).minify(loads.map(function(load) {
-      return fromFileURL(load.address) 
+      return fromFileURL(load.address);
     }));
 
     if (cleanCSS.errors.length)
