@@ -90,7 +90,9 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
     }
 
     return [stubDefines, cssInject, '("' + escape(cssOutput) + '");'].join('\n');
-  }, function() {
-    throw new Error('Install Clean CSS via `jspm install npm:clean-css --dev` for CSS build support. Set System.buildCSS = false to skip CSS builds.');
+  }, function(err) {
+    if (err.toString().indexOf('ENOENT') != -1)
+      throw new Error('Install Clean CSS via `jspm install npm:clean-css --dev` for CSS build support. Set System.buildCSS = false to skip CSS builds.');
+    throw err;
   });
 };
