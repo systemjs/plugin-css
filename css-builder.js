@@ -54,8 +54,10 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
     var rootURL = loader.rootURL || fromFileURL(loader.baseURL);
 
     var cssOptimize = outputOpts.minify && outputOpts.cssOptimize !== false;
-    
+
     var outFile = loader.separateCSS ? outputOpts.outFile.replace(/\.js$/, '.css') : rootURL;
+
+    var rebase = 'rebaseCSS' in loader ? loader.rebaseCSS : true;
 
     var cleanCSS = new CleanCSS({
       advanced: cssOptimize,
@@ -63,6 +65,7 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
       mediaMerging: cssOptimize,
       restructuring: cssOptimize,
       shorthandCompacting: cssOptimize,
+      rebase: rebase,
 
       target: outFile,
       relativeTo: rootURL,

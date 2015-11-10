@@ -30,6 +30,7 @@ To alter this behaviour use the SystemJS configuration options:
 
 * `separateCSS`: true / false whether to build a CSS file at the same output name as the bundle itself to be included with a link tag. Defaults to false.
 * `buildCSS`: true / false whether to bundle CSS files or leave as separate requests. Defaults to true.
+* `rebaseCSS`: true / false whether to rebase the paths inside of the CSS files. Defaults to true.
 * `rootURL`: Optional, address that when set normalizes all CSS URLs to be absolute relative to this path.
 
 ### Build Example
