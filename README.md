@@ -1,7 +1,7 @@
-css
-===
+system-css
+==========
 
-CSS loading plugin
+CSS loading plugin for SystemJS.
 
 Basic Use
 ---

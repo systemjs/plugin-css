@@ -1,4 +1,26 @@
 {
+  "registry": "jspm",
+  "name": "system-css",
+  "description": "CSS loading plugin for SystemJS.",
+  "version": "0.0.0",
   "main": "css",
-  "registry": "jspm"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:systemjs/plugin-css.git"
+  },
+  "keywords": [
+    "systemjs",
+    "loader"
+  ],
+  "authors": [
+    "Guy Bedford <guybedford@gmail.com>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/systemjs/plugin-css/issues"
+  },
+  "homepage": "https://github.com/systemjs/plugin-css"
 }
