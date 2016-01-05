@@ -1,5 +1,5 @@
 {
-  "name": "plugin-css"
+  "name": "plugin-css",
   "main": "css",
   "registry": "jspm",
   "version": "0.1.20"
