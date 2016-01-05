@@ -1,4 +1,6 @@
 {
+  "name": "plugin-css"
   "main": "css",
-  "registry": "jspm"
+  "registry": "jspm",
+  "version": "0.1.20"
 }
