@@ -3,6 +3,14 @@ css
 
 CSS loading plugin
 
+Installation
+---
+For installing with JSPM run:
+
+```
+jspm install css
+```
+
 Basic Use
 ---
 
