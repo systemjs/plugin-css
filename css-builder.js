@@ -42,7 +42,30 @@ exports.listAssets = function(loads, compileOpts, outputOpts) {
 exports.bundle = function(loads, compileOpts, outputOpts) {
   var loader = this;
 
-  return loader['import']('clean-css').then(function(CleanCSS) {
+    var getCleanCSS = function() {
+      try {
+        var node_cleancss = System._nodeRequire('clean-css');
+          return new Promise(function(resolve, reject) {
+            resolve(node_cleancss);
+          });
+      } catch (err1) {
+        if (err1.toString().indexOf('ENOENT') !== -1) {
+          // clean-css not found under node_modules, let's see if it's in jspm_packages
+          return loader['import']('clean-css').then(function(CleanCSS) {
+            return CleanCSS;
+          }, function(err2) {
+            if (err2.toString().indexOf('ENOENT') !== -1)
+              throw new Error('Install Clean CSS either via `jspm install npm:clean-css --dev` or `npm install clean-css --save-dev` for CSS build support. Set System.buildCSS = false to skip CSS builds.');
+            throw err2;
+          });
+        } else {
+          throw err1;
+        }
+      }
+    };
+
+    return getCleanCSS().then(function(CleanCSS) {
+
     // SystemJS Builder 0.14 will write the stubs for use, we detect by the 3 argument over 2 argument bundle call
     var writeStubs = typeof outputOpts == 'undefined';
     outputOpts = outputOpts || compileOpts;
@@ -90,9 +113,5 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
     }
 
     return [stubDefines, cssInject, '("' + escape(cssOutput) + '");'].join('\n');
-  }, function(err) {
-    if (err.toString().indexOf('ENOENT') != -1)
-      throw new Error('Install Clean CSS via `jspm install npm:clean-css --dev` for CSS build support. Set System.buildCSS = false to skip CSS builds.');
-    throw err;
   });
 };
