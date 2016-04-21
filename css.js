@@ -39,10 +39,24 @@ if (typeof window !== 'undefined') {
             resolve('');
         }, 7);
       };
-      var link = document.createElement('link');
-      link.type = 'text/css';
-      link.rel = 'stylesheet';
-      link.href = url;
+      
+      var present = false;
+      var link = undefined;
+      
+      for (var i = 0; i < links.length; i++) {
+        if (links[i].href.split('?')[0] === url) {
+          link = links[i];
+          present = true;
+          break;
+        }
+      }
+      
+      if (!present) {
+        link = document.createElement('link');
+        link.type = 'text/css';
+        link.rel = 'stylesheet';
+      }
+   
       if (!isWebkit) {
         link.onload = function() {
           _callback();
@@ -50,10 +64,17 @@ if (typeof window !== 'undefined') {
       } else {
         webkitLoadCheck(link, _callback);
       }
+      
       link.onerror = function(event) {
         _callback(event.error || new Error('Error loading CSS file.'));
       };
-      head.appendChild(link);
+
+      if (present)        
+         link.href = url + '?' + new Date().getTime();
+      else
+         link.href = url; // back-compatibility
+      
+      if (!present) head.appendChild(link);
     });
   };
 
