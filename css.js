@@ -81,7 +81,7 @@ if (typeof window !== 'undefined') {
   exports.fetch = function(load) {
     // dont reload styles loaded in the head
     var links = findExistingCSS(load.address)
-    if(!cssIsReloadable)
+    if(!cssIsReloadable(links))
         return '';
     return loadCSS(load.address, links);
   };
@@ -99,7 +99,7 @@ else {
     // setting format = 'defined' means we're managing our own output
     load.metadata.format = 'defined';
     // don't load the CSS at all until build time
-    return '';
+    return Promise.resolve('');
   };
   exports.instantiate = function() {};
   exports.bundle = function(loads, opts) {
@@ -122,7 +122,8 @@ else {
 function filter(arrayLike, func){
   var arr = []
   forEach(arrayLike, function(item){
-    arr.push(item);
+    if(func(item))
+      arr.push(item);
   });
   return arr;
 }

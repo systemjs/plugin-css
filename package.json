@@ -2,5 +2,18 @@
   "name": "systemjs-plugin-css",
   "version": "0.1.20",
   "main": "css",
-  "registry": "jspm"
+  "registry": "jspm",
+  "scripts": {
+  	"test": "mocha --harmony test/test.js"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
+    "mocha": "^2.4.5",
+    "mocha-phantomjs": "^4.0.2",
+    "sinon": "^1.17.4",
+    "sinon-chai": "^2.8.0",
+    "systemjs": "^0.19.28",
+    "systemjs-builder": "^0.15.17"
+  }
 }
