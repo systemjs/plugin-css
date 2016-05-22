@@ -68,18 +68,17 @@ if (typeof window !== 'undefined') {
       };
       head.insertBefore(link, existingLinks[0]);
     })
+    // Remove the old link regardless of loading outcome
     .then(function(result){ 
       forEach(existingLinks, function(link){link.parentElement.removeChild(link);})
       return result;
-    })
-    .catch(function(err){
+    }, function(err){
       forEach(existingLinks, function(link){link.parentElement.removeChild(link);})
       throw err;
-    });
+    })
   };
 
   exports.fetch = function(load) {
-    debugger;
     // dont reload styles loaded in the head
     var links = findExistingCSS(load.address)
     if(!cssIsReloadable)
