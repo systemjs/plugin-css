@@ -66,7 +66,10 @@ if (typeof window !== 'undefined') {
       link.onerror = function(event) {
         _callback(event.error || new Error('Error loading CSS file.'));
       };
-      head.insertBefore(link, existingLinks[0]);
+      if (existingLinks.length)
+        head.insertBefore(link, existingLinks[0]);
+      else
+        head.appendChild(link);
     })
     // Remove the old link regardless of loading outcome
     .then(function(result){ 
