@@ -95,7 +95,7 @@ else {
     if (builderPromise)
       return builderPromise;
     
-    return builderPromise = loader['import']('./css-plugin-base.js', module.id)
+    return builderPromise = System['import']('./css-plugin-base.js', module.id)
     .then(function(CSSPluginBase) {
       return new CSSPluginBase(function compile(source, address, outAddress) {
         return {
