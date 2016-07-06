@@ -40,7 +40,7 @@ exports.inline = function(loads, opts) {
 
       return resolve({
         css: minified.styles,
-        map: minified.sourceMap
+        map: minified.sourceMap.toString()
       });
     });
   })
