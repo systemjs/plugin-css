@@ -15,12 +15,12 @@ if (typeof window !== 'undefined') {
     }, 10);
   };
 
-  var cssIsReloadable = function cssIsReloadable(links){
+  var cssIsReloadable = function cssIsReloadable(links) {
     // Css loaded on the page initially should be skipped by the first
     // systemjs load, and marked for reload
     var reloadable = true;
-    forEach(links, function(link){
-      if(!link.hasAttribute('data-systemjs-css')){
+    forEach(links, function(link) {
+      if(!link.hasAttribute('data-systemjs-css')) {
         reloadable = false;
         link.setAttribute('data-systemjs-css', '');
       }
@@ -83,46 +83,60 @@ if (typeof window !== 'undefined') {
 
   exports.fetch = function(load) {
     // dont reload styles loaded in the head
-    var links = findExistingCSS(load.address)
+    var links = findExistingCSS(load.address);
     if(!cssIsReloadable(links))
         return '';
     return loadCSS(load.address, links);
   };
 }
 else {
+  var builderPromise;
   function getBuilder(loader) {
-    return loader['import']('./css-builder' + (System.version ? '.js' : ''), { name: module.id });
+    if (builderPromise)
+      return builderPromise;
+    
+    return builderPromise = loader['import']('./css-plugin-base.js', module.id)
+    .then(function(CSSPluginBase) {
+      return new CSSPluginBase(function compile(source, address, outAddress) {
+        return {
+          css: source,
+          map: null,
+          moduleSource: null,
+          moduleFormat: null
+        };
+      });
+    });
   }
 
   exports.cssPlugin = true;
-  exports.fetch = function(load) {
-    // individually mark loads as not built for buildCSS false
-    if (this.buildCSS === false)
-      load.metadata.build = false;
-    // setting format = 'defined' means we're managing our own output
-    load.metadata.format = 'defined';
-    // don't load the CSS at all until build time
-    return Promise.resolve('');
-  };
-  exports.instantiate = function() {};
-  exports.bundle = function(loads, opts) {
+  exports.translate = function(load, opts) {
     var loader = this;
-    if (loader.buildCSS === false)
-      return '';
     return getBuilder(loader).then(function(builder) {
-      return builder.bundle.call(loader, loads, opts);
+      builder.translate.call(loader, load, opts);
     });
   };
-  exports.listAssets = function(loads, compileOpts, outputOpts) {
+  exports.instantiate = function(load, opts) {
     var loader = this;
     return getBuilder(loader).then(function(builder) {
-      return builder.listAssets.call(loader, loads, compileOpts, outputOpts);
+      builder.instantiate.call(loader, load, opts);
+    });
+  };
+  exports.inline = function(loads, opts) {
+    var loader = this;
+    return getBuilder(loader).then(function(builder) {
+      return builder.inline.call(loader, loads, opts);
+    });
+  };
+  exports.listAssets = function(loads, opts) {
+    var loader = this;
+    return getBuilder(loader).then(function(builder) {
+      return builder.listAssets.call(loader, loads, opts);
     });
   };
 }
 
 // Because IE8?
-function filter(arrayLike, func){
+function filter(arrayLike, func) {
   var arr = []
   forEach(arrayLike, function(item){
     if(func(item))
