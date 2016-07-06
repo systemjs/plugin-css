@@ -6,23 +6,24 @@ function CSSPluginBase(compileCSS) {
   this.compileCSS = compileCSS;
 
   this.translate = function(load, opts) {
-    var path = System._nodeRequire('path');
+    var path = this._nodeRequire && this._nodeRequire('path');
 
     var loader = this;
 
     var outAddress = loader.separateCSS ? toFileURL(path.resolve(opts.outFile.replace(/\.js$/, '.css'))) : loader.rootURL || loader.baseURL;
 
-    return Promise.resolve(compileCSS(load.source, load.address, outAddress))
+    return Promise.resolve(compileCSS.call(loader, load.source, load.address, outAddress))
     .then(function(result) {
       load.metadata.style = result.css;
       load.metadata.styleSourceMap = result.map;
-      load.metadata.format = result.moduleFormat || 'defined';
+      if (result.moduleFormat)
+        load.metadata.format = result.moduleFormat;
       return result.moduleSource || '';
     });
   };
 }
 
-var isWin = process.platform.match(/^win/);
+var isWin = typeof process != 'undefined' && process.platform.match(/^win/);
 function toFileURL(path) {
   return 'file://' + (isWin ? '/' : '') + path.replace(/\\/g, '/');
 }
@@ -55,7 +56,11 @@ CSSPluginBase.prototype.listAssets = function(loads, opts) {
  */
 // NB hot reloading support here
 CSSPluginBase.prototype.instantiate = function(load) {
+  if (this.builder)
+    return;
+
   var style = document.createElement('style');
+  style.type = 'text/css';
   style.innerHTML = load.metadata.style;
   document.head.appendChild(style);
 };
