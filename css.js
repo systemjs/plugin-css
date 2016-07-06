@@ -112,13 +112,13 @@ else {
   exports.translate = function(load, opts) {
     var loader = this;
     return getBuilder(loader).then(function(builder) {
-      builder.translate.call(loader, load, opts);
+      return builder.translate.call(loader, load, opts);
     });
   };
   exports.instantiate = function(load, opts) {
     var loader = this;
     return getBuilder(loader).then(function(builder) {
-      builder.instantiate.call(loader, load, opts);
+      return builder.instantiate.call(loader, load, opts);
     });
   };
   exports.inline = function(loads, opts) {
