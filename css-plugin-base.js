@@ -33,11 +33,11 @@ function getBuilder(loader) {
   return builderPromise = loader['import']('./css-plugin-base-builder.js', module.id);
 }
 
-CSSPluginBase.prototype.inline = function(loads, opts) {
+CSSPluginBase.prototype.bundle = function(loads, compileOpts, outputOpts) {
   var loader = this;
   return getBuilder(loader)
   .then(function(builder) {
-    return builder.inline.call(loader, loads, opts);
+    return builder.bundle.call(loader, loads, compileOpts, outputOpts);
   });
 };
 
