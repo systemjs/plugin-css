@@ -1,5 +1,6 @@
 var CleanCSS = require('./clean-css.js');
 var fs = require('@node/fs');
+var path = require('@node/path');
 
 var cssInject = "(function(c){if (typeof document == 'undefined') return; var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})";
 
@@ -48,18 +49,28 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
   bundleCnt = listAssetsCnt = 0;
 
   var loader = this;
-  var outFile = loader.separateCSS ? outputOpts.outFile.replace(/\.js$/, '.css') : loader.rootURL || fromFileURL(loader.baseURL);
+  var outFile = loader.separateCSS ? path.resolve(outputOpts.outFile).replace(/\.js$/, '.css') : loader.rootURL && path.resolve(loader.rootURL) || fromFileURL(loader.baseURL);
+
+  var lowestBase = cssLoads.reduce(function(lowestPath, load) {
+    var lowestPathParts = lowestPath.split('/');
+    var loadPathParts = fromFileURL(load.address).split('/');
+    var newLowest = [];
+    for (var i = 0; i < lowestPathParts.length && i < loadPathParts.length; i++)
+      if (lowestPathParts[i] == loadPathParts[i])
+        newLowest.push(loadPathParts[i]);
+    return newLowest.join('/');
+  }, outFile);
 
   var inputFiles = {};
   cssLoads.forEach(function(load) {
-    inputFiles[load.address] = {
+    inputFiles[fromFileURL(load.address).substr(lowestBase.length + 1)] = {
       styles: load.metadata.style,
       sourceMap: load.metadata.styleSourceMap
     };
   });
 
   return new Promise(function(resolve, reject) {
-    new CleanCSS({ sourceMap: true, target: outFile }).minify(inputFiles, function(err, minified) {
+    new CleanCSS({ sourceMap: true, target: outFile.substr(lowestBase.length + 1) }).minify(inputFiles, function(err, minified) {
       if (err)
         return reject(err);
 
