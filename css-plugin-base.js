@@ -10,9 +10,7 @@ function CSSPluginBase(compileCSS) {
 
     var loader = this;
 
-    var outAddress = loader.separateCSS ? toFileURL(path.resolve(opts.outFile.replace(/\.js$/, '.css'))) : loader.rootURL && toFileURL(path.resolve(loader.rootURL)) || loader.baseURL;    
-
-    return Promise.resolve(compileCSS.call(loader, load.source, load.address, outAddress, load.metadata.loaderOptions || {}))
+    return Promise.resolve(compileCSS.call(loader, load.source, load.address, load.metadata.loaderOptions || {}))
     .then(function(result) {
       load.metadata.style = result.css;
       load.metadata.styleSourceMap = result.map;
