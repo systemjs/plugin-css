@@ -20,14 +20,38 @@ function fromFileURL(url) {
   return url.substr(7 + !!isWin).replace(/\//g, isWin ? '\\' : '/');
 }
 
+var listAssetsCnt = 0;
+exports.listAssets = function(loads, opts) {
+  // count the number of plugin phases inheriting this plugin
+  listAssetsCnt++;
+  return loads.map(function(load) {
+    return {
+      url: load.address,
+      source: load.metadata.style,
+      sourceMap: load.metadata.styleSourceMap,
+      type: 'css'
+    };
+  });
+};
+
+var bundleCnt = 0;
+var cssLoads = [];
 exports.bundle = function(loads, compileOpts, outputOpts) {
+  // count the number of phases inheriting this plugin
+  // then apply reduction as a single process for the last one only
+  bundleCnt++;
+  cssLoads = cssLoads.concat(loads);
+  if (bundleCnt != listAssetsCnt)
+    return;
+
+  // reset for next
+  bundleCnt = listAssetsCnt = 0;
 
   var loader = this;
-
   var outFile = loader.separateCSS ? outputOpts.outFile.replace(/\.js$/, '.css') : loader.rootURL || fromFileURL(loader.baseURL);
 
   var inputFiles = {};
-  loads.forEach(function(load) {
+  cssLoads.forEach(function(load) {
     inputFiles[load.address] = {
       styles: load.metadata.style,
       sourceMap: load.metadata.styleSourceMap
@@ -46,30 +70,21 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
     });
   })
   .then(function(result) {
+    var cssOutput = result.css;
+
     // write a separate CSS file if necessary
     if (loader.separateCSS) {
       if (outputOpts.sourceMaps) {
         fs.writeFileSync(outFile + '.map', result.map.toString());
-        cssOutput += '/*# sourceMappingURL=' + outFile.split(/[\\/]/).pop() + '.map*/';
+        cssOutput += '\n/*# sourceMappingURL=' + outFile.split(/[\\/]/).pop() + '.map*/';
       }
 
-      fs.writeFileSync(outFile, result.css);
+      fs.writeFileSync(outFile, cssOutput);
     }
     else {
       // NB do data-encoding of css source map for non separateCSS case?
       // cssOutput += '/*# sourceMappingURL=data,''
-      return cssInject + '\n("' + escape(result.css) + '");';
+      return cssInject + '\n("' + escape(cssOutput) + '");';
     }
-  });
-};
-
-exports.listAssets = function(loads, opts) {
-  return loads.map(function(load) {
-    return {
-      url: load.address,
-      source: load.metadata.style,
-      sourceMap: load.metadata.styleSourceMap,
-      type: 'css'
-    };
   });
 };
