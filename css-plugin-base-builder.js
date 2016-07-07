@@ -19,11 +19,11 @@ function fromFileURL(url) {
   return url.substr(7 + !!isWin).replace(/\//g, isWin ? '\\' : '/');
 }
 
-exports.inline = function(loads, opts) {
+exports.bundle = function(loads, compileOpts, outputOpts) {
 
   var loader = this;
 
-  var outFile = loader.separateCSS ? opts.outFile.replace(/\.js$/, '.css') : loader.rootURL || fromFileURL(loader.baseURL);
+  var outFile = loader.separateCSS ? outputOpts.outFile.replace(/\.js$/, '.css') : loader.rootURL || fromFileURL(loader.baseURL);
 
   var inputFiles = {};
   loads.forEach(function(load) {
@@ -47,7 +47,7 @@ exports.inline = function(loads, opts) {
   .then(function(result) {
     // write a separate CSS file if necessary
     if (loader.separateCSS) {
-      if (opts.sourceMaps) {
+      if (outputOpts.sourceMaps) {
         fs.writeFileSync(outFile + '.map', result.map.toString());
         cssOutput += '/*# sourceMappingURL=' + outFile.split(/[\\/]/).pop() + '.map*/';
       }
