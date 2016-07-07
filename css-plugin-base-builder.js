@@ -1,4 +1,5 @@
 var CleanCSS = require('./clean-css.js');
+var fs = require('@node/fs');
 
 var cssInject = "(function(c){if (typeof document == 'undefined') return; var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})";
 
@@ -57,9 +58,8 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
     else {
       // NB do data-encoding of css source map for non separateCSS case?
       // cssOutput += '/*# sourceMappingURL=data,''
+      return cssInject + '\n("' + escape(result.css) + '");';
     }
-
-    return cssInject + '\n("' + escape(result.css) + '");';
   });
 };
 

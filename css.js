@@ -121,10 +121,10 @@ else {
       return builder.instantiate.call(loader, load, opts);
     });
   };
-  exports.inline = function(loads, opts) {
+  exports.bundle = function(loads, compileOpts, outputOpts) {
     var loader = this;
     return getBuilder(loader).then(function(builder) {
-      return builder.inline.call(loader, loads, opts);
+      return builder.bundle.call(loader, loads, compileOpts, outputOpts);
     });
   };
   exports.listAssets = function(loads, opts) {
