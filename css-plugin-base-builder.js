@@ -51,26 +51,21 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
   var loader = this;
   var outFile = loader.separateCSS ? path.resolve(outputOpts.outFile).replace(/\.js$/, '.css') : loader.rootURL && path.resolve(loader.rootURL) || fromFileURL(loader.baseURL);
 
-  var lowestBase = cssLoads.reduce(function(lowestPath, load) {
-    var lowestPathParts = lowestPath.split('/');
-    var loadPathParts = fromFileURL(load.address).split('/');
-    var newLowest = [];
-    for (var i = 0; i < lowestPathParts.length && i < loadPathParts.length; i++)
-      if (lowestPathParts[i] == loadPathParts[i])
-        newLowest.push(loadPathParts[i]);
-    return newLowest.join('/');
-  }, outFile);
-
   var inputFiles = {};
   cssLoads.forEach(function(load) {
-    inputFiles[fromFileURL(load.address).substr(lowestBase.length + 1)] = {
+    inputFiles[fromFileURL(load.address)] = {
       styles: load.metadata.style,
       sourceMap: load.metadata.styleSourceMap
     };
   });
 
   return new Promise(function(resolve, reject) {
-    new CleanCSS({ sourceMap: true, target: outFile.substr(lowestBase.length + 1) }).minify(inputFiles, function(err, minified) {
+    new CleanCSS({
+      sourceMap: true,
+      target: outFile,
+      root: loader.rootURL && path.resolve(loader.rootURL),
+      relativeTo: loader.rootURL && path.resolve(loader.rootURL) || path.dirname(outFile)
+    }).minify(inputFiles, function(err, minified) {
       if (err)
         return reject(err);
 

@@ -1,6 +1,7 @@
 module.exports = function(System){
 	System.config({
 		transpiler: false,
+		rootURL: './test',
 		paths: {
 			"npm:*": "node_modules/*"
 		},
