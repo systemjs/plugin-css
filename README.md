@@ -3,24 +3,54 @@ css
 
 CSS loading plugin
 
-Installation
+Usage
 ---
+
+For use with SystemJS natively, configure:
+
+```
+npm install systemjs-plugin-css
+```
+
+Then add the configuration:
+
+```javascript
+SystemJS.config({
+  map: {
+    css: 'node_modules/systemjs-plugin-css/css.js'
+  }
+});
+```
+
 For installing with JSPM run:
 
 ```
 jspm install css
 ```
 
-Basic Use
----
+To configure css files to load with the plugin set:
 
 ```javascript
-import './style.css!'
+SystemJS.config({
+  meta: {
+    '*.css': { loader: css }
+  }
+});
 ```
 
-Currently CSS bundling is only supported in jspm, please post an issue if you would like support outside of jspm.
+Or via package configuration as well:
 
-If not using jspm, set `System.buildCSS = false` to disable the builds.
+```javascript
+SystemJS.config({
+  packages: {
+    'src/': {
+      meta: {
+        '*.css': { loader: 'css' }
+      }
+    }
+  }
+});
+```
 
 Modular CSS Concepts
 ---
@@ -38,7 +68,7 @@ To alter this behaviour use the SystemJS configuration options:
 
 * `separateCSS`: true / false whether to build a CSS file at the same output name as the bundle itself to be included with a link tag. Defaults to false.
 * `buildCSS`: true / false whether to bundle CSS files or leave as separate requests. Defaults to true.
-* `rootURL`: Optional, address that when set normalizes all CSS URLs to be absolute relative to this path.
+* `rootURL`: Optional, local path that when set normalizes all CSS URLs to be absolute to this path.
 
 ### Build Example
 
@@ -50,10 +80,9 @@ To alter this behaviour use the SystemJS configuration options:
   .then(function() {
     // additional config can also be set through `builder.config`
     builder.config({
-      baseURL: 'file:' + process.cwd(),
       separateCSS: true,
-      rootURL: 'file:' + process.cwd(),
-
+      rootURL: './public'
+      
       // to disable css optimizations
       // cssOptimize: false
     });
