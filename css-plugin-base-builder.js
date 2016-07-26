@@ -45,14 +45,15 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
   if (bundleCnt != listAssetsCnt)
     return;
 
+  var loader = this;
+
   // backwards compat with fileURL for rootURL
-  if (loader.rootURL.substr(0, 5) == 'file:')
+  if (loader.rootURL && loader.rootURL.substr(0, 5) == 'file:')
     loader.rootURL = fromFileURL(loader.rootURL);
 
   // reset for next
   bundleCnt = listAssetsCnt = 0;
 
-  var loader = this;
   var outFile = loader.separateCSS ? path.resolve(outputOpts.outFile).replace(/\.js$/, '.css') : loader.rootURL && path.resolve(loader.rootURL) || fromFileURL(loader.baseURL);
 
   var inputFiles = {};
