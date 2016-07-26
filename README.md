@@ -3,10 +3,16 @@ css
 
 CSS loading plugin
 
-Usage
+Installation
 ---
 
-For use with SystemJS natively, configure:
+For installing with JSPM run:
+
+```
+jspm install css
+```
+
+For use with SystemJS natively, use:
 
 ```
 npm install systemjs-plugin-css
@@ -22,11 +28,8 @@ SystemJS.config({
 });
 ```
 
-For installing with JSPM run:
-
-```
-jspm install css
-```
+Setup
+---
 
 To configure css files to load with the plugin set:
 
@@ -59,6 +62,12 @@ CSS in the dependency tree implies a CSS modularisation where styles can be scop
 
 Just like JS requires, the order of CSS injection can't be guaranteed. The idea here is that whenever there are style overrides, they should be based on using a more specific selector with an extra id or class at the base, and not assuming a CSS load order. Reset and global styles are a repeated dependency of all modular styles that build on top of them.
 
+### CSS Transpilation
+
+This plugin also acts as a base class that can be extended to author other CSS plugins such as LESS, modular CSS etc.
+
+For example, see the [plugin-less project](http://github.com/systemjs/plugin-less).
+
 Builder Support
 ---
 
@@ -82,7 +91,7 @@ To alter this behaviour use the SystemJS configuration options:
     builder.config({
       separateCSS: true,
       rootURL: './public'
-      
+
       // to disable css optimizations
       // cssOptimize: false
     });
@@ -92,10 +101,6 @@ To alter this behaviour use the SystemJS configuration options:
 ```
 
 Will generate `bundle.js` containing the JS files and `bundle.css` containing the compressed CSS for the bundle.
-
-### Source Maps
-
-CSS source maps are supported when using the `separateCSS` output option.
 
 ### License
 
