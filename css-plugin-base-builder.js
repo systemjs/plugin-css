@@ -45,6 +45,10 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
   if (bundleCnt != listAssetsCnt)
     return;
 
+  // backwards compat with fileURL for rootURL
+  if (loader.rootURL.substr(0, 5) == 'file:')
+    loader.rootURL = fromFileURL(loader.rootURL);
+
   // reset for next
   bundleCnt = listAssetsCnt = 0;
 
