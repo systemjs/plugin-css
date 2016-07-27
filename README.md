@@ -55,6 +55,54 @@ SystemJS.config({
 });
 ```
 
+Advanced Configuration
+---
+
+While this plugin don't have plugin functionality yet to run csscomb, 
+autoprefixer, less, scss, postcss etc. you will still be able to do that 
+on backend side.
+
+You can override css location with `System.cssOptions.map` property.
+
+Example:
+
+```javascript
+SystemJS.config({
+  paths: {
+    "app/": "src/"
+  },
+  cssOptions: {
+    "map": {
+      "src/*.less": ".tmp/src/*.css"
+    }
+  }
+});
+```
+
+On backend side something like grunt, gulp must watch files for changes and
+rebuild them in the way you need. BrowserSync could emit changes and do css hot
+reload for you.
+
+Other MAP examples:
+
+```javascript
+{
+  "src/": ".tmp/src/",
+  "src": ".tmp/src",
+  "src/*.less": ".tmp/src/*.css",
+  "src/*.css": ".tmp/src/*.css",
+}
+```
+
+This plugin performs weighted mapping so if you have multiple matching map 
+conditions then the last one with highest weight will be used for location
+remap.
+
+Weight measured by amount of characters matched between source location and 
+map condition excluding wildcard characters.
+
+Only one wildcard character is allowed to be used in map condition. 
+
 Modular CSS Concepts
 ---
 

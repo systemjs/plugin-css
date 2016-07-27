@@ -72,7 +72,7 @@ if (typeof window !== 'undefined') {
         head.appendChild(link);
     })
     // Remove the old link regardless of loading outcome
-    .then(function(result){ 
+    .then(function(result){
       forEach(existingLinks, function(link){link.parentElement.removeChild(link);})
       return result;
     }, function(err){
@@ -81,6 +81,12 @@ if (typeof window !== 'undefined') {
     })
   };
 
+  exports.locate = function(load, opts) {
+    return System['import']('./path-resolver.js', module.id)
+      .then(function(resolvePath) {
+        return resolvePath(load.address, this);
+      }.bind(this));
+  };
   exports.fetch = function(load) {
     // dont reload styles loaded in the head
     var links = findExistingCSS(load.address);
@@ -94,7 +100,7 @@ else {
   function getBuilder(loader) {
     if (builderPromise)
       return builderPromise;
-    
+
     return builderPromise = System['import']('./css-plugin-base.js', module.id)
     .then(function(CSSPluginBase) {
       return new CSSPluginBase(function compile(source, address) {
@@ -109,6 +115,12 @@ else {
   }
 
   exports.cssPlugin = true;
+  exports.locate = function(load, opts) {
+    return System['import']('./path-resolver.js', module.id)
+      .then(function(resolvePath) {
+        return resolvePath(load.address, this);
+      }.bind(this));
+  };
   exports.translate = function(load, opts) {
     var loader = this;
     return getBuilder(loader).then(function(builder) {
