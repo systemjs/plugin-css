@@ -37,7 +37,7 @@ describe('CSS Browser Injector', function(){
 			return System.import('test/systemjs-config.js').then(function(config){
 				config(System)
 			})
-		})
+		});
 
 		it('Should load annotated with no link present', function(){
 			var self = this;
@@ -48,7 +48,7 @@ describe('CSS Browser Injector', function(){
 					expect(findExistingCSS(self.cssUrl)[0].hasAttribute('data-systemjs-css')).to.equal(true)
 				])
 			})
-		})
+		});
 
 		it('Should not reload un-annotated tag', function(){
 			var self = this;
@@ -65,7 +65,7 @@ describe('CSS Browser Injector', function(){
 						expect(link.hasAttribute('data-systemjs-css')).to.equal(true)
 					])
 				})
-		})
+		});
 		it('Should reload an annotated tag', function(){
 			var self = this;
 			var link = document.createElement('link');
@@ -75,13 +75,13 @@ describe('CSS Browser Injector', function(){
 			link.setAttribute('data-systemjs-css', '')
 			document.head.appendChild(link);
 			return System.import('test/data/test.css!')
-				.then(function(){
-					return Promise.all([
-						expect(findExistingCSS(self.cssUrl).length).to.equal(1),
-						expect(findExistingCSS(self.cssUrl)[0]).to.not.equal(link),
-						expect(findExistingCSS(self.cssUrl)[0].hasAttribute('data-systemjs-css')).to.equal(true)
-					])
-				})
-		})
-	})
-})
+			.then(function(){
+				return Promise.all([
+					expect(findExistingCSS(self.cssUrl).length).to.equal(1),
+					expect(findExistingCSS(self.cssUrl)[0]).to.not.equal(link),
+					expect(findExistingCSS(self.cssUrl)[0].hasAttribute('data-systemjs-css')).to.equal(true)
+				])
+			});
+		});
+	});
+});

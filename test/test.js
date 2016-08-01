@@ -27,7 +27,7 @@ function phantom(htmlFile) {
 
 function getRunnerArgs() {
 	var runner = process.argv.indexOf('-R') + 1 || process.argv.indexOf('--runner') + 1;
-	if(runner !== 0)
+	if (runner !== 0)
 		return [process.argv[runner - 1], process.argv[runner]];
 	return [];
 }

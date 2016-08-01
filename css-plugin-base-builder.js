@@ -42,6 +42,7 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
   // then apply reduction as a single process for the last one only
   bundleCnt++;
   cssLoads = cssLoads.concat(loads);
+
   if (bundleCnt != listAssetsCnt)
     return;
 
@@ -68,8 +69,7 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
     new CleanCSS({
       sourceMap: true,
       target: outFile,
-      root: loader.rootURL && path.resolve(loader.rootURL),
-      relativeTo: loader.rootURL && path.resolve(loader.rootURL) || path.dirname(outFile)
+      root: loader.rootURL && path.resolve(loader.rootURL)
     }).minify(inputFiles, function(err, minified) {
       if (err)
         return reject(err);
