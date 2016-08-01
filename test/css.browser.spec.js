@@ -56,7 +56,7 @@ describe('CSS Browser Injector', function(){
 			link.type = 'text/css';
 			link.rel = 'stylesheet';
 			link.href = self.cssUrl;
-			document.head.insertBefore(link);
+			document.head.appendChild(link);
 			return System.import('test/data/test.css!')
 				.then(function(){
 					return Promise.all([
@@ -73,7 +73,7 @@ describe('CSS Browser Injector', function(){
 			link.rel = 'stylesheet';
 			link.href = self.cssUrl;
 			link.setAttribute('data-systemjs-css', '')
-			document.head.insertBefore(link);
+			document.head.appendChild(link);
 			return System.import('test/data/test.css!')
 				.then(function(){
 					return Promise.all([
