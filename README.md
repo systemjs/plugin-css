@@ -36,7 +36,7 @@ To configure css files to load with the plugin set:
 ```javascript
 SystemJS.config({
   meta: {
-    '*.css': { loader: css }
+    '*.css': { loader: 'css' }
   }
 });
 ```
