@@ -1,7 +1,7 @@
-!function(e){function r(e,r,o){return 4===arguments.length?t.apply(this,arguments):void n(e,{declarative:!0,deps:r,declare:o})}function t(e,r,t,o){n(e,{declarative:!1,deps:r,executingRequire:t,execute:o})}function n(e,r){r.name=e,e in p||(p[e]=r),r.normalizedDeps=r.deps}function o(e,r){if(r[e.groupIndex]=r[e.groupIndex]||[],-1==v.call(r[e.groupIndex],e)){r[e.groupIndex].push(e);for(var t=0,n=e.normalizedDeps.length;n>t;t++){var a=e.normalizedDeps[t],u=p[a];if(u&&!u.evaluated){var d=e.groupIndex+(u.declarative!=e.declarative);if(void 0===u.groupIndex||u.groupIndex<d){if(void 0!==u.groupIndex&&(r[u.groupIndex].splice(v.call(r[u.groupIndex],u),1),0==r[u.groupIndex].length))throw new TypeError("Mixed dependency cycle detected");u.groupIndex=d}o(u,r)}}}}function a(e){var r=p[e];r.groupIndex=0;var t=[];o(r,t);for(var n=!!r.declarative==t.length%2,a=t.length-1;a>=0;a--){for(var u=t[a],i=0;i<u.length;i++){var s=u[i];n?d(s):l(s)}n=!n}}function u(e){return x[e]||(x[e]={name:e,dependencies:[],exports:{},importers:[]})}function d(r){if(!r.module){var t=r.module=u(r.name),n=r.module.exports,o=r.declare.call(e,function(e,r){if(t.locked=!0,"object"==typeof e)for(var o in e)n[o]=e[o];else n[e]=r;for(var a=0,u=t.importers.length;u>a;a++){var d=t.importers[a];if(!d.locked)for(var i=0;i<d.dependencies.length;++i)d.dependencies[i]===t&&d.setters[i](n)}return t.locked=!1,r},r.name);t.setters=o.setters,t.execute=o.execute;for(var a=0,i=r.normalizedDeps.length;i>a;a++){var l,s=r.normalizedDeps[a],c=p[s],v=x[s];v?l=v.exports:c&&!c.declarative?l=c.esModule:c?(d(c),v=c.module,l=v.exports):l=f(s),v&&v.importers?(v.importers.push(t),t.dependencies.push(v)):t.dependencies.push(null),t.setters[a]&&t.setters[a](l)}}}function i(e){var r,t=p[e];if(t)t.declarative?c(e,[]):t.evaluated||l(t),r=t.module.exports;else if(r=f(e),!r)throw new Error("Unable to load dependency "+e+".");return(!t||t.declarative)&&r&&r.__useDefault?r["default"]:r}function l(r){if(!r.module){var t={},n=r.module={exports:t,id:r.name};if(!r.executingRequire)for(var o=0,a=r.normalizedDeps.length;a>o;o++){var u=r.normalizedDeps[o],d=p[u];d&&l(d)}r.evaluated=!0;var c=r.execute.call(e,function(e){for(var t=0,n=r.deps.length;n>t;t++)if(r.deps[t]==e)return i(r.normalizedDeps[t]);throw new TypeError("Module "+e+" not declared as a dependency.")},t,n);c&&(n.exports=c),t=n.exports,t&&t.__esModule?r.esModule=t:r.esModule=s(t)}}function s(r){if(r===e)return r;var t={};if("object"==typeof r||"function"==typeof r)if(g){var n;for(var o in r)(n=Object.getOwnPropertyDescriptor(r,o))&&h(t,o,n)}else{var a=r&&r.hasOwnProperty;for(var o in r)(!a||r.hasOwnProperty(o))&&(t[o]=r[o])}return t["default"]=r,h(t,"__useDefault",{value:!0}),t}function c(r,t){var n=p[r];if(n&&!n.evaluated&&n.declarative){t.push(r);for(var o=0,a=n.normalizedDeps.length;a>o;o++){var u=n.normalizedDeps[o];-1==v.call(t,u)&&(p[u]?c(u,t):f(u))}n.evaluated||(n.evaluated=!0,n.module.execute.call(e))}}function f(e){if(D[e])return D[e];if("@node/"==e.substr(0,6))return y(e.substr(6));var r=p[e];if(!r)throw"Module "+e+" not present.";return a(e),c(e,[]),p[e]=void 0,r.declarative&&h(r.module.exports,"__esModule",{value:!0}),D[e]=r.declarative?r.module.exports:r.esModule}var p={},v=Array.prototype.indexOf||function(e){for(var r=0,t=this.length;t>r;r++)if(this[r]===e)return r;return-1},g=!0;try{Object.getOwnPropertyDescriptor({a:0},"a")}catch(m){g=!1}var h;!function(){try{Object.defineProperty({},"a",{})&&(h=Object.defineProperty)}catch(e){h=function(e,r,t){try{e[r]=t.value||t.get.call(e)}catch(n){}}}}();var x={},y="undefined"!=typeof System&&System._nodeRequire||"undefined"!=typeof require&&require.resolve&&"undefined"!=typeof process&&require,D={"@empty":{}};return function(e,n,o){return function(a){a(function(a){for(var u={_nodeRequire:y,register:r,registerDynamic:t,get:f,set:function(e,r){D[e]=r},newModule:function(e){return e}},d=0;d<n.length;d++)(function(e,r){r&&r.__esModule?D[e]=r:D[e]=s(r)})(n[d],arguments[d]);o(u);var i=f(e[0]);if(e.length>1)for(var d=1;d<e.length;d++)f(e[d]);return i.__useDefault?i["default"]:i})}}}("undefined"!=typeof self?self:global)
+!function(e){function r(e,r,o){return 4===arguments.length?t.apply(this,arguments):void n(e,{declarative:!0,deps:r,declare:o})}function t(e,r,t,o){n(e,{declarative:!1,deps:r,executingRequire:t,execute:o})}function n(e,r){r.name=e,e in v||(v[e]=r),r.normalizedDeps=r.deps}function o(e,r){if(r[e.groupIndex]=r[e.groupIndex]||[],-1==g.call(r[e.groupIndex],e)){r[e.groupIndex].push(e);for(var t=0,n=e.normalizedDeps.length;n>t;t++){var a=e.normalizedDeps[t],u=v[a];if(u&&!u.evaluated){var d=e.groupIndex+(u.declarative!=e.declarative);if(void 0===u.groupIndex||u.groupIndex<d){if(void 0!==u.groupIndex&&(r[u.groupIndex].splice(g.call(r[u.groupIndex],u),1),0==r[u.groupIndex].length))throw new TypeError("Mixed dependency cycle detected");u.groupIndex=d}o(u,r)}}}}function a(e){var r=v[e];r.groupIndex=0;var t=[];o(r,t);for(var n=!!r.declarative==t.length%2,a=t.length-1;a>=0;a--){for(var u=t[a],i=0;i<u.length;i++){var s=u[i];n?d(s):l(s)}n=!n}}function u(e){return y[e]||(y[e]={name:e,dependencies:[],exports:{},importers:[]})}function d(r){if(!r.module){var t=r.module=u(r.name),n=r.module.exports,o=r.declare.call(e,function(e,r){if(t.locked=!0,"object"==typeof e)for(var o in e)n[o]=e[o];else n[e]=r;for(var a=0,u=t.importers.length;u>a;a++){var d=t.importers[a];if(!d.locked)for(var i=0;i<d.dependencies.length;++i)d.dependencies[i]===t&&d.setters[i](n)}return t.locked=!1,r},{id:r.name});t.setters=o.setters,t.execute=o.execute;for(var a=0,i=r.normalizedDeps.length;i>a;a++){var l,s=r.normalizedDeps[a],c=v[s],f=y[s];f?l=f.exports:c&&!c.declarative?l=c.esModule:c?(d(c),f=c.module,l=f.exports):l=p(s),f&&f.importers?(f.importers.push(t),t.dependencies.push(f)):t.dependencies.push(null),t.setters[a]&&t.setters[a](l)}}}function i(e){var r,t=v[e];if(t)t.declarative?f(e,[]):t.evaluated||l(t),r=t.module.exports;else if(r=p(e),!r)throw new Error("Unable to load dependency "+e+".");return(!t||t.declarative)&&r&&r.__useDefault?r["default"]:r}function l(r){if(!r.module){var t={},n=r.module={exports:t,id:r.name};if(!r.executingRequire)for(var o=0,a=r.normalizedDeps.length;a>o;o++){var u=r.normalizedDeps[o],d=v[u];d&&l(d)}r.evaluated=!0;var c=r.execute.call(e,function(e){for(var t=0,n=r.deps.length;n>t;t++)if(r.deps[t]==e)return i(r.normalizedDeps[t]);throw new TypeError("Module "+e+" not declared as a dependency.")},t,n);c&&(n.exports=c),t=n.exports,t&&t.__esModule?r.esModule=t:r.esModule=s(t)}}function s(r){var t={};if(("object"==typeof r||"function"==typeof r)&&r!==e)if(m)for(var n in r)"default"!==n&&c(t,r,n);else{var o=r&&r.hasOwnProperty;for(var n in r)"default"===n||o&&!r.hasOwnProperty(n)||(t[n]=r[n])}return t["default"]=r,x(t,"__useDefault",{value:!0}),t}function c(e,r,t){try{var n;(n=Object.getOwnPropertyDescriptor(r,t))&&x(e,t,n)}catch(o){return e[t]=r[t],!1}}function f(r,t){var n=v[r];if(n&&!n.evaluated&&n.declarative){t.push(r);for(var o=0,a=n.normalizedDeps.length;a>o;o++){var u=n.normalizedDeps[o];-1==g.call(t,u)&&(v[u]?f(u,t):p(u))}n.evaluated||(n.evaluated=!0,n.module.execute.call(e))}}function p(e){if(I[e])return I[e];if("@node/"==e.substr(0,6))return D(e.substr(6));var r=v[e];if(!r)throw"Module "+e+" not present.";return a(e),f(e,[]),v[e]=void 0,r.declarative&&x(r.module.exports,"__esModule",{value:!0}),I[e]=r.declarative?r.module.exports:r.esModule}var v={},g=Array.prototype.indexOf||function(e){for(var r=0,t=this.length;t>r;r++)if(this[r]===e)return r;return-1},m=!0;try{Object.getOwnPropertyDescriptor({a:0},"a")}catch(h){m=!1}var x;!function(){try{Object.defineProperty({},"a",{})&&(x=Object.defineProperty)}catch(e){x=function(e,r,t){try{e[r]=t.value||t.get.call(e)}catch(n){}}}}();var y={},D="undefined"!=typeof System&&System._nodeRequire||"undefined"!=typeof require&&require.resolve&&"undefined"!=typeof process&&require,I={"@empty":{}};return function(e,n,o,a){return function(u){u(function(u){for(var d={_nodeRequire:D,register:r,registerDynamic:t,get:p,set:function(e,r){I[e]=r},newModule:function(e){return e}},i=0;i<n.length;i++)(function(e,r){r&&r.__esModule?I[e]=r:I[e]=s(r)})(n[i],arguments[i]);a(d);var l=p(e[0]);if(e.length>1)for(var i=1;i<e.length;i++)p(e[i]);return o?l["default"]:l})}}}("undefined"!=typeof self?self:global)
 
-(["1"], [], function($__System) {
-
+(["1"], [], true, function($__System) {
+var require = this.require, exports = this.exports, module = this.module;
 $__System.registerDynamic("2", ["@node/fs", "@node/path", "@node/http", "@node/https", "@node/url", "3", "4", "5", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
@@ -1462,7 +1462,7 @@ $__System.registerDynamic("16", ["17", "15", "10", "18", "6"], true, function($_
   var stringifySelectors = $__require('15').selectors;
   var cleanUpSelectors = $__require('10').selectors;
   var isSpecial = $__require('18');
-  function mergeAdjacent(tokens, options, validator) {
+  function mergeAdjacent(tokens, options, context) {
     var lastToken = [null, [], []];
     var adjacentSpace = options.compatibility.selectors.adjacentSpace;
     for (var i = 0,
@@ -1475,7 +1475,7 @@ $__System.registerDynamic("16", ["17", "15", "10", "18", "6"], true, function($_
       if (lastToken[0] == 'selector' && stringifySelectors(token[1]) == stringifySelectors(lastToken[1])) {
         var joinAt = [lastToken[2].length];
         Array.prototype.push.apply(lastToken[2], token[2]);
-        optimizeProperties(token[1], lastToken[2], joinAt, true, options, validator);
+        optimizeProperties(token[1], lastToken[2], joinAt, true, options, context);
         token[2] = [];
       } else if (lastToken[0] == 'selector' && stringifyBody(token[2]) == stringifyBody(lastToken[2]) && !isSpecial(options, stringifySelectors(token[1])) && !isSpecial(options, stringifySelectors(lastToken[1]))) {
         lastToken[1] = cleanUpSelectors(lastToken[1].concat(token[1]), false, adjacentSpace);
@@ -1499,7 +1499,7 @@ $__System.registerDynamic("19", ["17", "15", "18", "1a", "6"], true, function($_
   var stringifySelectors = $__require('15').selectors;
   var isSpecial = $__require('18');
   var cloneArray = $__require('1a');
-  function reduceNonAdjacent(tokens, options, validator) {
+  function reduceNonAdjacent(tokens, options, context) {
     var candidates = {};
     var repeated = [];
     for (var i = tokens.length - 1; i >= 0; i--) {
@@ -1527,8 +1527,8 @@ $__System.registerDynamic("19", ["17", "15", "18", "1a", "6"], true, function($_
         });
       }
     }
-    reduceSimpleNonAdjacentCases(tokens, repeated, candidates, options, validator);
-    reduceComplexNonAdjacentCases(tokens, candidates, options, validator);
+    reduceSimpleNonAdjacentCases(tokens, repeated, candidates, options, context);
+    reduceComplexNonAdjacentCases(tokens, candidates, options, context);
   }
   function wrappedSelectorsFrom(list) {
     var wrapped = [];
@@ -1537,7 +1537,7 @@ $__System.registerDynamic("19", ["17", "15", "18", "1a", "6"], true, function($_
     }
     return wrapped;
   }
-  function reduceSimpleNonAdjacentCases(tokens, repeated, candidates, options, validator) {
+  function reduceSimpleNonAdjacentCases(tokens, repeated, candidates, options, context) {
     function filterOut(idx, bodies) {
       return data[idx].isPartial && bodies.length === 0;
     }
@@ -1552,10 +1552,10 @@ $__System.registerDynamic("19", ["17", "15", "18", "1a", "6"], true, function($_
       reduceSelector(tokens, selector, data, {
         filterOut: filterOut,
         callback: reduceBody
-      }, options, validator);
+      }, options, context);
     }
   }
-  function reduceComplexNonAdjacentCases(tokens, candidates, options, validator) {
+  function reduceComplexNonAdjacentCases(tokens, candidates, options, context) {
     var localContext = {};
     function filterOut(idx) {
       return localContext.data[idx].where < localContext.intoPosition;
@@ -1584,14 +1584,14 @@ $__System.registerDynamic("19", ["17", "15", "18", "1a", "6"], true, function($_
         reduceSelector(tokens, selector, data, {
           filterOut: filterOut,
           callback: collectReducedBodies
-        }, options, validator);
+        }, options, context);
         if (stringifyBody(reducedBodies[reducedBodies.length - 1]) != stringifyBody(reducedBodies[0]))
           continue allSelectors;
       }
       intoToken[2] = reducedBodies[0];
     }
   }
-  function reduceSelector(tokens, selector, data, context, options, validator) {
+  function reduceSelector(tokens, selector, data, context, options, outerContext) {
     var bodies = [];
     var bodiesAsList = [];
     var joinsAt = [];
@@ -1611,7 +1611,7 @@ $__System.registerDynamic("19", ["17", "15", "18", "1a", "6"], true, function($_
       if (bodiesAsList[j].length > 0)
         joinsAt.push((joinsAt[j - 1] || 0) + bodiesAsList[j].length);
     }
-    optimizeProperties(selector, bodies, joinsAt, false, options, validator);
+    optimizeProperties(selector, bodies, joinsAt, false, options, outerContext);
     var processedCount = processedTokens.length;
     var propertyIdx = bodies.length - 1;
     var tokenIdx = processedCount - 1;
@@ -1873,6 +1873,10 @@ $__System.registerDynamic("1c", ["1d", "1e", "1f", "20", "12", "21", "1b", "15",
         } else if (left.shorthand && !right.shorthand && isComponentOf(left, right)) {
           if (right.important && !left.important)
             continue;
+          if (!right.important && left.important) {
+            right.unused = true;
+            continue;
+          }
           if (moreSameShorthands(properties, i - 1, left.name))
             continue;
           if (overridingFunction(left, validator))
@@ -1966,20 +1970,30 @@ $__System.registerDynamic("20", ["6"], true, function($__require, exports, modul
   return module.exports;
 });
 
-$__System.registerDynamic("22", ["1e", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("22", ["1e", "23", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
       GLOBAL = this;
   var compactable = $__require('1e');
-  function populateComponents(properties, validator) {
+  var InvalidPropertyError = $__require('23');
+  function populateComponents(properties, validator, warnings) {
     for (var i = properties.length - 1; i >= 0; i--) {
       var property = properties[i];
       var descriptor = compactable[property.name];
       if (descriptor && descriptor.shorthand) {
         property.shorthand = true;
         property.dirty = true;
-        property.components = descriptor.breakUp(property, compactable, validator);
+        try {
+          property.components = descriptor.breakUp(property, compactable, validator);
+        } catch (e) {
+          if (e instanceof InvalidPropertyError) {
+            property.components = [];
+            warnings.push(e.message);
+          } else {
+            throw e;
+          }
+        }
         if (property.components.length > 0)
           property.multiplex = property.components[0].multiplex;
         else
@@ -1999,6 +2013,7 @@ $__System.registerDynamic("21", ["1f", "6"], true, function($__require, exports,
   var shallowClone = $__require('1f').shallow;
   var MULTIPLEX_SEPARATOR = ',';
   function everyCombination(fn, left, right, validator) {
+    var samePositon = !left.shorthand && !right.shorthand && !left.multiplex && !right.multiplex;
     var _left = shallowClone(left);
     var _right = shallowClone(right);
     for (var i = 0,
@@ -2006,6 +2021,8 @@ $__System.registerDynamic("21", ["1f", "6"], true, function($__require, exports,
       for (var j = 0,
           m = right.value.length; j < m; j++) {
         if (left.value[i][0] == MULTIPLEX_SEPARATOR || right.value[j][0] == MULTIPLEX_SEPARATOR)
+          continue;
+        if (samePositon && i != j)
           continue;
         _left.value = [left.value[i]];
         _right.value = [right.value[j]];
@@ -2019,7 +2036,7 @@ $__System.registerDynamic("21", ["1f", "6"], true, function($__require, exports,
   return module.exports;
 });
 
-$__System.registerDynamic("23", ["1e", "1f", "20", "22", "11", "21", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("24", ["1e", "1f", "20", "22", "11", "21", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
@@ -2057,7 +2074,7 @@ $__System.registerDynamic("23", ["1e", "1f", "20", "22", "11", "21", "6"], true,
     var newProperty = wrapSingle(newValuePlaceholder);
     newProperty.shorthand = true;
     newProperty.dirty = true;
-    populateComponents([newProperty], validator);
+    populateComponents([newProperty], validator, []);
     for (var i = 0,
         l = descriptor.components.length; i < l; i++) {
       var component = candidateComponents[descriptor.components[i]];
@@ -2145,12 +2162,29 @@ $__System.registerDynamic("13", ["6"], true, function($__require, exports, modul
   return module.exports;
 });
 
-$__System.registerDynamic("24", ["11", "4", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("23", ["6"], true, function($__require, exports, module) {
+  var process = $__require("6");
+  var define,
+      global = this,
+      GLOBAL = this;
+  function InvalidPropertyError(message) {
+    this.name = 'InvalidPropertyError';
+    this.message = message;
+    this.stack = (new Error()).stack;
+  }
+  InvalidPropertyError.prototype = Object.create(Error.prototype);
+  InvalidPropertyError.prototype.constructor = InvalidPropertyError;
+  module.exports = InvalidPropertyError;
+  return module.exports;
+});
+
+$__System.registerDynamic("25", ["11", "23", "4", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
       GLOBAL = this;
   var wrapSingle = $__require('11').single;
+  var InvalidPropertyError = $__require('23');
   var split = $__require('4');
   var MULTIPLEX_SEPARATOR = ',';
   function _colorFilter(validator) {
@@ -2263,17 +2297,18 @@ $__System.registerDynamic("24", ["11", "4", "6"], true, function($__require, exp
         break;
       }
     }
-    if (splitAt == -1)
-      return fourValues(property, compactable);
+    if (splitAt === 0 || splitAt === values.length - 1) {
+      throw new InvalidPropertyError('Invalid border-radius value.');
+    }
     var target = _wrapDefault(property.name, property, compactable);
-    target.value = values.slice(0, splitAt);
+    target.value = splitAt > -1 ? values.slice(0, splitAt) : values.slice(0);
     target.components = fourValues(target, compactable);
     var remainder = _wrapDefault(property.name, property, compactable);
-    remainder.value = values.slice(splitAt + 1);
+    remainder.value = splitAt > -1 ? values.slice(splitAt + 1) : values.slice(0);
     remainder.components = fourValues(remainder, compactable);
     for (var j = 0; j < 4; j++) {
       target.components[j].multiplex = true;
-      target.components[j].value = target.components[j].value.concat([['/']]).concat(remainder.components[j].value);
+      target.components[j].value = target.components[j].value.concat(remainder.components[j].value);
     }
     return target.components;
   }
@@ -2425,6 +2460,19 @@ $__System.registerDynamic("1d", ["6"], true, function($__require, exports, modul
   function always() {
     return true;
   }
+  function alwaysButIntoFunction(property1, property2, validator) {
+    var value1 = property1.value[0][0];
+    var value2 = property2.value[0][0];
+    var validFunction1 = validator.isValidFunction(value1);
+    var validFunction2 = validator.isValidFunction(value2);
+    if (validFunction1 && validFunction2) {
+      return validator.areSameFunction(value1, value2);
+    } else if (!validFunction1 && validFunction2) {
+      return false;
+    } else {
+      return true;
+    }
+  }
   function backgroundImage(property1, property2, validator) {
     var image1 = property1.value[0][0];
     var image2 = property2.value[0][0];
@@ -2487,6 +2535,7 @@ $__System.registerDynamic("1d", ["6"], true, function($__require, exports, modul
   }
   module.exports = {
     always: always,
+    alwaysButIntoFunction: alwaysButIntoFunction,
     backgroundImage: backgroundImage,
     border: border,
     color: color,
@@ -2633,7 +2682,7 @@ $__System.registerDynamic("1f", ["11", "6"], true, function($__require, exports,
   return module.exports;
 });
 
-$__System.registerDynamic("25", ["1f", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("26", ["1f", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
@@ -2723,7 +2772,7 @@ $__System.registerDynamic("25", ["1f", "6"], true, function($__require, exports,
         horizontalComponent.value = [component.value[0]];
         horizontal.components.push(horizontalComponent);
         var verticalComponent = shallowClone(property);
-        verticalComponent.value = [component.value[2]];
+        verticalComponent.value = [component.value[1] || component.value[0]];
         vertical.components.push(verticalComponent);
       }
       var horizontalValues = fourValues(horizontal, compactable);
@@ -2816,14 +2865,14 @@ $__System.registerDynamic("25", ["1f", "6"], true, function($__require, exports,
   return module.exports;
 });
 
-$__System.registerDynamic("1e", ["24", "1d", "25", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("1e", ["25", "1d", "26", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
       GLOBAL = this;
-  var breakUp = $__require('24');
+  var breakUp = $__require('25');
   var canOverride = $__require('1d');
-  var restore = $__require('25');
+  var restore = $__require('26');
   var compactable = {
     'color': {
       canOverride: canOverride.color,
@@ -2865,13 +2914,13 @@ $__System.registerDynamic("1e", ["24", "1d", "25", "6"], true, function($__requi
       doubleValues: true
     },
     'background-position': {
-      canOverride: canOverride.always,
+      canOverride: canOverride.alwaysButIntoFunction,
       defaultValue: ['0', '0'],
       doubleValues: true,
       shortestValue: '0'
     },
     'background-size': {
-      canOverride: canOverride.always,
+      canOverride: canOverride.alwaysButIntoFunction,
       defaultValue: ['auto'],
       doubleValues: true,
       shortestValue: '0 0'
@@ -3063,7 +3112,7 @@ $__System.registerDynamic("12", ["1e", "6"], true, function($__require, exports,
   return module.exports;
 });
 
-$__System.registerDynamic("17", ["1e", "11", "22", "1c", "23", "13", "12", "15", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("17", ["1e", "11", "22", "1c", "24", "13", "12", "15", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
@@ -3072,7 +3121,7 @@ $__System.registerDynamic("17", ["1e", "11", "22", "1c", "23", "13", "12", "15",
   var wrapForOptimizing = $__require('11').all;
   var populateComponents = $__require('22');
   var compactOverrides = $__require('1c');
-  var compactShorthands = $__require('23');
+  var compactShorthands = $__require('24');
   var removeUnused = $__require('13');
   var restoreFromOptimizing = $__require('12');
   var stringifyProperty = $__require('15').property;
@@ -3228,15 +3277,17 @@ $__System.registerDynamic("17", ["1e", "11", "22", "1c", "23", "13", "12", "15",
       lastProperty = property;
     }
   }
-  function optimize(selector, properties, mergeAdjacent, withCompacting, options, validator) {
+  function optimize(selector, properties, mergeAdjacent, withCompacting, options, context) {
+    var validator = context.validator;
+    var warnings = context.warnings;
     var _properties = wrapForOptimizing(properties);
-    populateComponents(_properties, validator);
+    populateComponents(_properties, validator, warnings);
     _optimize(_properties, mergeAdjacent, options.aggressiveMerging, validator);
     for (var i = 0,
         l = _properties.length; i < l; i++) {
       var _property = _properties[i];
       if (_property.variable && _property.block)
-        optimize(selector, _property.value[0], mergeAdjacent, withCompacting, options, validator);
+        optimize(selector, _property.value[0], mergeAdjacent, withCompacting, options, context);
     }
     if (withCompacting && options.shorthandCompacting) {
       compactOverrides(_properties, options.compatibility, validator);
@@ -3249,16 +3300,16 @@ $__System.registerDynamic("17", ["1e", "11", "22", "1c", "23", "13", "12", "15",
   return module.exports;
 });
 
-$__System.registerDynamic("26", ["17", "15", "27", "28", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("27", ["17", "15", "28", "29", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
       GLOBAL = this;
   var optimizeProperties = $__require('17');
   var stringifySelectors = $__require('15').selectors;
-  var extractProperties = $__require('27');
-  var canReorder = $__require('28').canReorder;
-  function mergeNonAdjacentBySelector(tokens, options, validator) {
+  var extractProperties = $__require('28');
+  var canReorder = $__require('29').canReorder;
+  function mergeNonAdjacentBySelector(tokens, options, context) {
     var allSelectors = {};
     var repeatedSelectors = [];
     var i;
@@ -3305,7 +3356,7 @@ $__System.registerDynamic("26", ["17", "15", "27", "28", "6"], true, function($_
             joinAt = [target[2].length];
             Array.prototype.push.apply(target[2], moved[2]);
           }
-          optimizeProperties(target[1], target[2], joinAt, true, options, validator);
+          optimizeProperties(target[1], target[2], joinAt, true, options, context);
           moved[2] = [];
         }
       }
@@ -3315,7 +3366,7 @@ $__System.registerDynamic("26", ["17", "15", "27", "28", "6"], true, function($_
   return module.exports;
 });
 
-$__System.registerDynamic("29", ["15", "10", "18", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("2a", ["15", "10", "18", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
@@ -3468,13 +3519,13 @@ $__System.registerDynamic("1a", ["6"], true, function($__require, exports, modul
   return module.exports;
 });
 
-$__System.registerDynamic("2a", ["27", "28", "15", "10", "18", "1a", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("2b", ["28", "29", "15", "10", "18", "1a", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
       GLOBAL = this;
-  var extractProperties = $__require('27');
-  var canReorderSingle = $__require('28').canReorderSingle;
+  var extractProperties = $__require('28');
+  var canReorderSingle = $__require('29').canReorderSingle;
   var stringifyBody = $__require('15').body;
   var stringifySelectors = $__require('15').selectors;
   var cleanUpSelectorDuplicates = $__require('10').selectorDuplicates;
@@ -3776,7 +3827,7 @@ $__System.registerDynamic("2a", ["27", "28", "15", "10", "18", "1a", "6"], true,
   return module.exports;
 });
 
-$__System.registerDynamic("2b", ["15", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("2c", ["15", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
@@ -3800,7 +3851,7 @@ $__System.registerDynamic("2b", ["15", "6"], true, function($__require, exports,
   return module.exports;
 });
 
-$__System.registerDynamic("28", ["6"], true, function($__require, exports, module) {
+$__System.registerDynamic("29", ["6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
@@ -3887,12 +3938,12 @@ $__System.registerDynamic("28", ["6"], true, function($__require, exports, modul
   return module.exports;
 });
 
-$__System.registerDynamic("15", ["2c", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("15", ["2d", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
       GLOBAL = this;
-  var helpers = $__require('2c');
+  var helpers = $__require('2d');
   function store(token, context) {
     context.output.push(typeof token == 'string' ? token : token[0]);
   }
@@ -3937,7 +3988,7 @@ $__System.registerDynamic("15", ["2c", "6"], true, function($__require, exports,
   return module.exports;
 });
 
-$__System.registerDynamic("27", ["15", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("28", ["15", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
@@ -3991,13 +4042,13 @@ $__System.registerDynamic("27", ["15", "6"], true, function($__require, exports,
   return module.exports;
 });
 
-$__System.registerDynamic("2d", ["28", "27", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("2e", ["29", "28", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
       GLOBAL = this;
-  var canReorder = $__require('28').canReorder;
-  var extractProperties = $__require('27');
+  var canReorder = $__require('29').canReorder;
+  var extractProperties = $__require('28');
   function mergeMediaQueries(tokens) {
     var candidates = {};
     var reduced = [];
@@ -4046,7 +4097,7 @@ $__System.registerDynamic("2d", ["28", "27", "6"], true, function($__require, ex
   return module.exports;
 });
 
-$__System.registerDynamic("2e", ["17", "14", "16", "19", "26", "29", "2a", "2b", "2d", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("2f", ["17", "14", "16", "19", "27", "2a", "2b", "2c", "2e", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
@@ -4055,11 +4106,11 @@ $__System.registerDynamic("2e", ["17", "14", "16", "19", "26", "29", "2a", "2b",
   var removeDuplicates = $__require('14');
   var mergeAdjacent = $__require('16');
   var reduceNonAdjacent = $__require('19');
-  var mergeNonAdjacentBySelector = $__require('26');
-  var mergeNonAdjacentByBody = $__require('29');
-  var restructure = $__require('2a');
-  var removeDuplicateMediaQueries = $__require('2b');
-  var mergeMediaQueries = $__require('2d');
+  var mergeNonAdjacentBySelector = $__require('27');
+  var mergeNonAdjacentByBody = $__require('2a');
+  var restructure = $__require('2b');
+  var removeDuplicateMediaQueries = $__require('2c');
+  var mergeMediaQueries = $__require('2e');
   function removeEmpty(tokens) {
     for (var i = 0,
         l = tokens.length; i < l; i++) {
@@ -4080,46 +4131,46 @@ $__System.registerDynamic("2e", ["17", "14", "16", "19", "26", "29", "2a", "2b",
       }
     }
   }
-  function recursivelyOptimizeBlocks(tokens, options, validator) {
+  function recursivelyOptimizeBlocks(tokens, options, context) {
     for (var i = 0,
         l = tokens.length; i < l; i++) {
       var token = tokens[i];
       if (token[0] == 'block') {
         var isKeyframes = /@(-moz-|-o-|-webkit-)?keyframes/.test(token[1][0]);
-        optimize(token[2], options, validator, !isKeyframes);
+        optimize(token[2], options, context, !isKeyframes);
       }
     }
   }
-  function recursivelyOptimizeProperties(tokens, options, validator) {
+  function recursivelyOptimizeProperties(tokens, options, context) {
     for (var i = 0,
         l = tokens.length; i < l; i++) {
       var token = tokens[i];
       switch (token[0]) {
         case 'selector':
-          optimizeProperties(token[1], token[2], false, true, options, validator);
+          optimizeProperties(token[1], token[2], false, true, options, context);
           break;
         case 'block':
-          recursivelyOptimizeProperties(token[2], options, validator);
+          recursivelyOptimizeProperties(token[2], options, context);
       }
     }
   }
-  function optimize(tokens, options, validator, withRestructuring) {
-    recursivelyOptimizeBlocks(tokens, options, validator);
-    recursivelyOptimizeProperties(tokens, options, validator);
+  function optimize(tokens, options, context, withRestructuring) {
+    recursivelyOptimizeBlocks(tokens, options, context);
+    recursivelyOptimizeProperties(tokens, options, context);
     removeDuplicates(tokens);
-    mergeAdjacent(tokens, options, validator);
-    reduceNonAdjacent(tokens, options, validator);
-    mergeNonAdjacentBySelector(tokens, options, validator);
+    mergeAdjacent(tokens, options, context);
+    reduceNonAdjacent(tokens, options, context);
+    mergeNonAdjacentBySelector(tokens, options, context);
     mergeNonAdjacentByBody(tokens, options);
     if (options.restructuring && withRestructuring) {
       restructure(tokens, options);
-      mergeAdjacent(tokens, options, validator);
+      mergeAdjacent(tokens, options, context);
     }
     if (options.mediaMerging) {
       removeDuplicateMediaQueries(tokens);
       var reduced = mergeMediaQueries(tokens);
       for (var i = reduced.length - 1; i >= 0; i--) {
-        optimize(reduced[i][2], options, validator, false);
+        optimize(reduced[i][2], options, context, false);
       }
     }
     removeEmpty(tokens);
@@ -4128,12 +4179,12 @@ $__System.registerDynamic("2e", ["17", "14", "16", "19", "26", "29", "2a", "2b",
   return module.exports;
 });
 
-$__System.registerDynamic("2f", ["2c", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("30", ["2d", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
       GLOBAL = this;
-  var all = $__require('2c').all;
+  var all = $__require('2d').all;
   function store(token, context) {
     context.output.push(typeof token == 'string' ? token : token[0]);
   }
@@ -4151,7 +4202,7 @@ $__System.registerDynamic("2f", ["2c", "6"], true, function($__require, exports,
   return module.exports;
 });
 
-$__System.registerDynamic("2c", ["@node/os", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("2d", ["@node/os", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
@@ -4169,9 +4220,6 @@ $__System.registerDynamic("2c", ["@node/os", "6"], true, function($__require, ex
   }
   function supportsAfterClosingBrace(token) {
     return token[0][0] == 'background' || token[0][0] == 'transform' || token[0][0] == 'src';
-  }
-  function isVariable(token, valueIndex) {
-    return token[valueIndex][0].indexOf('var(') === 0;
   }
   function afterClosingBrace(token, valueIndex) {
     return token[valueIndex][0][token[valueIndex][0].length - 1] == ')' || token[valueIndex][0].indexOf('__ESCAPED_URL_CLEAN_CSS') === 0;
@@ -4192,7 +4240,7 @@ $__System.registerDynamic("2c", ["@node/os", "6"], true, function($__require, ex
     return token[0][0] == 'filter' || token[0][0] == '-ms-filter';
   }
   function inSpecialContext(token, valueIndex, context) {
-    return (!context.spaceAfterClosingBrace && supportsAfterClosingBrace(token) || isVariable(token, valueIndex)) && afterClosingBrace(token, valueIndex) || beforeSlash(token, valueIndex) || afterSlash(token, valueIndex) || beforeComma(token, valueIndex) || afterComma(token, valueIndex);
+    return !context.spaceAfterClosingBrace && supportsAfterClosingBrace(token) && afterClosingBrace(token, valueIndex) || beforeSlash(token, valueIndex) || afterSlash(token, valueIndex) || beforeComma(token, valueIndex) || afterComma(token, valueIndex);
   }
   function selectors(tokens, context) {
     var store = context.store;
@@ -4232,7 +4280,8 @@ $__System.registerDynamic("2c", ["@node/os", "6"], true, function($__require, ex
     var store = context.store;
     var token = tokens[position];
     var isVariableDeclaration = token[0][0].indexOf('--') === 0;
-    if (isVariableDeclaration && atRulesOrProperties(token[1])) {
+    var isBlockVariable = isVariableDeclaration && Array.isArray(token[1][0]);
+    if (isVariableDeclaration && isBlockVariable && atRulesOrProperties(token[1])) {
       store('{', context);
       body(token[1], context);
       store('};', context);
@@ -4301,13 +4350,13 @@ $__System.registerDynamic("2c", ["@node/os", "6"], true, function($__require, ex
   return module.exports;
 });
 
-$__System.registerDynamic("30", ["31", "2c", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("31", ["32", "2d", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
       GLOBAL = this;
-  var SourceMapGenerator = $__require('31').SourceMapGenerator;
-  var all = $__require('2c').all;
+  var SourceMapGenerator = $__require('32').SourceMapGenerator;
+  var all = $__require('2d').all;
   var isWindows = process.platform == 'win32';
   var unknownSource = '$stdin';
   function store(element, context) {
@@ -4385,13 +4434,13 @@ $__System.registerDynamic("30", ["31", "2c", "6"], true, function($__require, ex
   return module.exports;
 });
 
-$__System.registerDynamic("32", ["33", "34", "@node/os", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("33", ["34", "35", "@node/os", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
       GLOBAL = this;
-  var EscapeStore = $__require('33');
-  var QuoteScanner = $__require('34');
+  var EscapeStore = $__require('34');
+  var QuoteScanner = $__require('35');
   var SPECIAL_COMMENT_PREFIX = '/*!';
   var COMMENT_PREFIX = '/*';
   var COMMENT_SUFFIX = '*/';
@@ -4492,12 +4541,12 @@ $__System.registerDynamic("32", ["33", "34", "@node/os", "6"], true, function($_
   return module.exports;
 });
 
-$__System.registerDynamic("35", ["33", "@node/os", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("36", ["34", "@node/os", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
       GLOBAL = this;
-  var EscapeStore = $__require('33');
+  var EscapeStore = $__require('34');
   var EXPRESSION_NAME = 'expression';
   var EXPRESSION_START = '(';
   var EXPRESSION_END = ')';
@@ -4589,7 +4638,7 @@ $__System.registerDynamic("35", ["33", "@node/os", "6"], true, function($__requi
   return module.exports;
 });
 
-$__System.registerDynamic("34", ["6"], true, function($__require, exports, module) {
+$__System.registerDynamic("35", ["6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
@@ -4690,13 +4739,13 @@ $__System.registerDynamic("34", ["6"], true, function($__require, exports, modul
   return module.exports;
 });
 
-$__System.registerDynamic("36", ["33", "34", "@node/os", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("37", ["34", "35", "@node/os", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
       GLOBAL = this;
-  var EscapeStore = $__require('33');
-  var QuoteScanner = $__require('34');
+  var EscapeStore = $__require('34');
+  var QuoteScanner = $__require('35');
   var lineBreak = $__require('@node/os').EOL;
   function FreeTextProcessor(saveWaypoints) {
     this.matches = new EscapeStore('FREE_TEXT');
@@ -4767,7 +4816,7 @@ $__System.registerDynamic("36", ["33", "34", "@node/os", "6"], true, function($_
   return module.exports;
 });
 
-$__System.registerDynamic("33", ["6"], true, function($__require, exports, module) {
+$__System.registerDynamic("34", ["6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
@@ -4815,13 +4864,13 @@ $__System.registerDynamic("33", ["6"], true, function($__require, exports, modul
   return module.exports;
 });
 
-$__System.registerDynamic("37", ["33", "38", "@node/os", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("38", ["34", "39", "@node/os", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
       GLOBAL = this;
-  var EscapeStore = $__require('33');
-  var reduceUrls = $__require('38');
+  var EscapeStore = $__require('34');
+  var reduceUrls = $__require('39');
   var lineBreak = $__require('@node/os').EOL;
   function UrlsProcessor(context, saveWaypoints, keepUrlQuotes) {
     this.urls = new EscapeStore('URL');
@@ -4847,6 +4896,8 @@ $__System.registerDynamic("37", ["33", "38", "@node/os", "6"], true, function($_
   };
   function normalize(url, keepUrlQuotes) {
     url = url.replace(/^url/gi, 'url').replace(/\\?\n|\\?\r\n/g, '').replace(/(\s{2,}|\s)/g, ' ').replace(/^url\((['"])? /, 'url($1').replace(/ (['"])?\)$/, '$1)');
+    if (/url\(".*'.*"\)/.test(url) || /url\('.*".*'\)/.test(url))
+      return url;
     if (!keepUrlQuotes && !/^['"].+['"]$/.test(url) && !/url\(.*[\s\(\)].*\)/.test(url) && !/url\(['"]data:[^;]+;charset/.test(url))
       url = url.replace(/["']/g, '');
     return url;
@@ -4869,7 +4920,7 @@ $__System.registerDynamic("37", ["33", "38", "@node/os", "6"], true, function($_
   return module.exports;
 });
 
-$__System.registerDynamic("39", ["@node/util", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("3a", ["@node/util", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
@@ -5017,13 +5068,13 @@ $__System.registerDynamic("39", ["@node/util", "6"], true, function($__require, 
   return module.exports;
 });
 
-$__System.registerDynamic("3a", ["3b"], true, function($__require, exports, module) {
+$__System.registerDynamic("3b", ["3c"], true, function($__require, exports, module) {
   ;
   var define,
       global = this,
       GLOBAL = this;
   if (typeof define !== 'function') {
-    var define = $__require('3b')(module, $__require);
+    var define = $__require('3c')(module, $__require);
   }
   define(function($__require, exports, module) {
     exports.GREATEST_LOWER_BOUND = 1;
@@ -5073,13 +5124,13 @@ $__System.registerDynamic("3a", ["3b"], true, function($__require, exports, modu
   return module.exports;
 });
 
-$__System.registerDynamic("3c", ["3b"], true, function($__require, exports, module) {
+$__System.registerDynamic("3d", ["3c"], true, function($__require, exports, module) {
   ;
   var define,
       global = this,
       GLOBAL = this;
   if (typeof define !== 'function') {
-    var define = $__require('3b')(module, $__require);
+    var define = $__require('3c')(module, $__require);
   }
   define(function($__require, exports, module) {
     function swap(ary, x, y) {
@@ -5115,20 +5166,20 @@ $__System.registerDynamic("3c", ["3b"], true, function($__require, exports, modu
   return module.exports;
 });
 
-$__System.registerDynamic("3d", ["3b", "3e", "3a", "3f", "40", "3c"], true, function($__require, exports, module) {
+$__System.registerDynamic("3e", ["3c", "3f", "3b", "40", "41", "3d"], true, function($__require, exports, module) {
   ;
   var define,
       global = this,
       GLOBAL = this;
   if (typeof define !== 'function') {
-    var define = $__require('3b')(module, $__require);
+    var define = $__require('3c')(module, $__require);
   }
   define(function($__require, exports, module) {
-    var util = $__require('3e');
-    var binarySearch = $__require('3a');
-    var ArraySet = $__require('3f').ArraySet;
-    var base64VLQ = $__require('40');
-    var quickSort = $__require('3c').quickSort;
+    var util = $__require('3f');
+    var binarySearch = $__require('3b');
+    var ArraySet = $__require('40').ArraySet;
+    var base64VLQ = $__require('41');
+    var quickSort = $__require('3d').quickSort;
     function SourceMapConsumer(aSourceMap) {
       var sourceMap = aSourceMap;
       if (typeof aSourceMap === 'string') {
@@ -5669,13 +5720,13 @@ $__System.registerDynamic("3d", ["3b", "3e", "3a", "3f", "40", "3c"], true, func
   return module.exports;
 });
 
-$__System.registerDynamic("41", ["3b"], true, function($__require, exports, module) {
+$__System.registerDynamic("42", ["3c"], true, function($__require, exports, module) {
   ;
   var define,
       global = this,
       GLOBAL = this;
   if (typeof define !== 'function') {
-    var define = $__require('3b')(module, $__require);
+    var define = $__require('3c')(module, $__require);
   }
   define(function($__require, exports, module) {
     var intToCharMap = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'.split('');
@@ -5717,16 +5768,16 @@ $__System.registerDynamic("41", ["3b"], true, function($__require, exports, modu
   return module.exports;
 });
 
-$__System.registerDynamic("40", ["3b", "41"], true, function($__require, exports, module) {
+$__System.registerDynamic("41", ["3c", "42"], true, function($__require, exports, module) {
   ;
   var define,
       global = this,
       GLOBAL = this;
   if (typeof define !== 'function') {
-    var define = $__require('3b')(module, $__require);
+    var define = $__require('3c')(module, $__require);
   }
   define(function($__require, exports, module) {
-    var base64 = $__require('41');
+    var base64 = $__require('42');
     var VLQ_BASE_SHIFT = 5;
     var VLQ_BASE = 1 << VLQ_BASE_SHIFT;
     var VLQ_BASE_MASK = VLQ_BASE - 1;
@@ -5779,16 +5830,16 @@ $__System.registerDynamic("40", ["3b", "41"], true, function($__require, exports
   return module.exports;
 });
 
-$__System.registerDynamic("3f", ["3b", "3e"], true, function($__require, exports, module) {
+$__System.registerDynamic("40", ["3c", "3f"], true, function($__require, exports, module) {
   ;
   var define,
       global = this,
       GLOBAL = this;
   if (typeof define !== 'function') {
-    var define = $__require('3b')(module, $__require);
+    var define = $__require('3c')(module, $__require);
   }
   define(function($__require, exports, module) {
-    var util = $__require('3e');
+    var util = $__require('3f');
     function ArraySet() {
       this._array = [];
       this._set = {};
@@ -5837,16 +5888,16 @@ $__System.registerDynamic("3f", ["3b", "3e"], true, function($__require, exports
   return module.exports;
 });
 
-$__System.registerDynamic("42", ["3b", "3e"], true, function($__require, exports, module) {
+$__System.registerDynamic("43", ["3c", "3f"], true, function($__require, exports, module) {
   ;
   var define,
       global = this,
       GLOBAL = this;
   if (typeof define !== 'function') {
-    var define = $__require('3b')(module, $__require);
+    var define = $__require('3c')(module, $__require);
   }
   define(function($__require, exports, module) {
-    var util = $__require('3e');
+    var util = $__require('3f');
     function generatedPositionAfter(mappingA, mappingB) {
       var lineA = mappingA.generatedLine;
       var lineB = mappingB.generatedLine;
@@ -5887,19 +5938,19 @@ $__System.registerDynamic("42", ["3b", "3e"], true, function($__require, exports
   return module.exports;
 });
 
-$__System.registerDynamic("43", ["3b", "40", "3e", "3f", "42"], true, function($__require, exports, module) {
+$__System.registerDynamic("44", ["3c", "41", "3f", "40", "43"], true, function($__require, exports, module) {
   ;
   var define,
       global = this,
       GLOBAL = this;
   if (typeof define !== 'function') {
-    var define = $__require('3b')(module, $__require);
+    var define = $__require('3c')(module, $__require);
   }
   define(function($__require, exports, module) {
-    var base64VLQ = $__require('40');
-    var util = $__require('3e');
-    var ArraySet = $__require('3f').ArraySet;
-    var MappingList = $__require('42').MappingList;
+    var base64VLQ = $__require('41');
+    var util = $__require('3f');
+    var ArraySet = $__require('40').ArraySet;
+    var MappingList = $__require('43').MappingList;
     function SourceMapGenerator(aArgs) {
       if (!aArgs) {
         aArgs = {};
@@ -6142,7 +6193,7 @@ $__System.registerDynamic("43", ["3b", "40", "3e", "3f", "42"], true, function($
   return module.exports;
 });
 
-$__System.registerDynamic("3b", ["@node/path", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("3c", ["@node/path", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
@@ -6349,13 +6400,13 @@ $__System.registerDynamic("3b", ["@node/path", "6"], true, function($__require, 
   return module.exports;
 });
 
-$__System.registerDynamic("3e", ["3b"], true, function($__require, exports, module) {
+$__System.registerDynamic("3f", ["3c"], true, function($__require, exports, module) {
   ;
   var define,
       global = this,
       GLOBAL = this;
   if (typeof define !== 'function') {
-    var define = $__require('3b')(module, $__require);
+    var define = $__require('3c')(module, $__require);
   }
   define(function($__require, exports, module) {
     function getArg(aArgs, aName, aDefaultValue) {
@@ -6594,17 +6645,17 @@ $__System.registerDynamic("3e", ["3b"], true, function($__require, exports, modu
   return module.exports;
 });
 
-$__System.registerDynamic("44", ["3b", "43", "3e"], true, function($__require, exports, module) {
+$__System.registerDynamic("45", ["3c", "44", "3f"], true, function($__require, exports, module) {
   ;
   var define,
       global = this,
       GLOBAL = this;
   if (typeof define !== 'function') {
-    var define = $__require('3b')(module, $__require);
+    var define = $__require('3c')(module, $__require);
   }
   define(function($__require, exports, module) {
-    var SourceMapGenerator = $__require('43').SourceMapGenerator;
-    var util = $__require('3e');
+    var SourceMapGenerator = $__require('44').SourceMapGenerator;
+    var util = $__require('3f');
     var REGEX_NEWLINE = /(\r?\n)/;
     var NEWLINE_CODE = 10;
     var isSourceNode = "$$$isSourceNode$$$";
@@ -6860,24 +6911,24 @@ $__System.registerDynamic("44", ["3b", "43", "3e"], true, function($__require, e
   return module.exports;
 });
 
-$__System.registerDynamic("31", ["43", "3d", "44"], true, function($__require, exports, module) {
+$__System.registerDynamic("32", ["44", "3e", "45"], true, function($__require, exports, module) {
   ;
   var define,
       global = this,
       GLOBAL = this;
-  exports.SourceMapGenerator = $__require('43').SourceMapGenerator;
-  exports.SourceMapConsumer = $__require('3d').SourceMapConsumer;
-  exports.SourceNode = $__require('44').SourceNode;
+  exports.SourceMapGenerator = $__require('44').SourceMapGenerator;
+  exports.SourceMapConsumer = $__require('3e').SourceMapConsumer;
+  exports.SourceNode = $__require('45').SourceNode;
   return module.exports;
 });
 
-$__System.registerDynamic("45", ["31", "@node/fs", "@node/path", "@node/http", "@node/https", "@node/url", "5", "6", "46"], true, function($__require, exports, module) {
+$__System.registerDynamic("46", ["32", "@node/fs", "@node/path", "@node/http", "@node/https", "@node/url", "5", "6", "47"], true, function($__require, exports, module) {
   var process = $__require("6"),
-      Buffer = $__require("46");
+      Buffer = $__require("47");
   var define,
       global = this,
       GLOBAL = this;
-  var SourceMapConsumer = $__require('31').SourceMapConsumer;
+  var SourceMapConsumer = $__require('32').SourceMapConsumer;
   var fs = $__require('@node/fs');
   var path = $__require('@node/path');
   var http = $__require('@node/http');
@@ -7023,7 +7074,7 @@ $__System.registerDynamic("45", ["31", "@node/fs", "@node/path", "@node/http", "
     var isRemote = REMOTE_RESOURCE.test(sourceFile);
     var sourcesMapping = {};
     consumer.sources.forEach(function(file, index) {
-      var uniquePath = isRemote ? url.resolve(path.dirname(sourceFile), file) : path.relative(self.relativeTo, path.resolve(path.dirname(sourceFile), file));
+      var uniquePath = isRemote ? url.resolve(path.dirname(sourceFile), file) : path.relative(self.relativeTo, path.resolve(path.dirname(sourceFile || '.'), file));
       sourcesMapping[uniquePath] = consumer.sourcesContent && consumer.sourcesContent[index];
     });
     self.sourcesContent[sourceFile] = sourcesMapping;
@@ -7102,7 +7153,7 @@ $__System.registerDynamic("45", ["31", "@node/fs", "@node/path", "@node/http", "
   return module.exports;
 });
 
-$__System.registerDynamic("47", ["6"], true, function($__require, exports, module) {
+$__System.registerDynamic("48", ["6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
@@ -7131,15 +7182,19 @@ $__System.registerDynamic("47", ["6"], true, function($__require, exports, modul
   return module.exports;
 });
 
-$__System.registerDynamic("38", ["6"], true, function($__require, exports, module) {
+$__System.registerDynamic("39", ["4", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
       GLOBAL = this;
+  var split = $__require('4');
   var URL_PREFIX = 'url(';
   var UPPERCASE_URL_PREFIX = 'URL(';
   var URL_SUFFIX = ')';
-  var DATA_URI_PREFIX = 'data:';
+  var SINGLE_QUOTE_URL_SUFFIX = '\')';
+  var DOUBLE_QUOTE_URL_SUFFIX = '")';
+  var DATA_URI_PREFIX_PATTERN = /^\s*['"]?\s*data:/;
+  var DATA_URI_TRAILER_PATTERN = /[\s\};,\/!]/;
   var IMPORT_URL_PREFIX = '@import';
   var UPPERCASE_IMPORT_URL_PREFIX = '@IMPORT';
   var COMMENT_END_MARKER = /\*\//;
@@ -7147,7 +7202,7 @@ $__System.registerDynamic("38", ["6"], true, function($__require, exports, modul
     var nextStart = 0;
     var nextStartUpperCase = 0;
     var nextEnd = 0;
-    var nextEndAhead = 0;
+    var firstMatch;
     var isDataURI = false;
     var cursor = 0;
     var tempData = [];
@@ -7160,19 +7215,20 @@ $__System.registerDynamic("38", ["6"], true, function($__require, exports, modul
       if (nextStart == -1 && nextStartUpperCase > -1)
         nextStart = nextStartUpperCase;
       if (data[nextStart + URL_PREFIX.length] == '"') {
-        nextEnd = data.indexOf('"', nextStart + URL_PREFIX.length + 1);
+        nextEnd = data.indexOf(DOUBLE_QUOTE_URL_SUFFIX, nextStart);
       } else if (data[nextStart + URL_PREFIX.length] == '\'') {
-        nextEnd = data.indexOf('\'', nextStart + URL_PREFIX.length + 1);
+        nextEnd = data.indexOf(SINGLE_QUOTE_URL_SUFFIX, nextStart);
       } else {
-        isDataURI = data.substring(nextStart + URL_PREFIX.length).trim().indexOf(DATA_URI_PREFIX) === 0;
-        nextEnd = data.indexOf(URL_SUFFIX, nextStart);
+        isDataURI = DATA_URI_PREFIX_PATTERN.test(data.substring(nextStart + URL_PREFIX.length));
         if (isDataURI) {
-          while (true) {
-            nextEndAhead = data.indexOf(URL_SUFFIX, nextEnd + 1);
-            if (nextEndAhead == -1 || /[\s\{\};]/.test(data.substring(nextEnd, nextEndAhead)))
-              break;
-            nextEnd = nextEndAhead;
+          firstMatch = split(data.substring(nextStart), DATA_URI_TRAILER_PATTERN, false, '(', ')', true).pop();
+          if (firstMatch && firstMatch[firstMatch.length - 1] == URL_SUFFIX) {
+            nextEnd = nextStart + firstMatch.length - URL_SUFFIX.length;
+          } else {
+            nextEnd = -1;
           }
+        } else {
+          nextEnd = data.indexOf(URL_SUFFIX, nextStart);
         }
       }
       if (nextEnd == -1) {
@@ -7252,14 +7308,14 @@ $__System.registerDynamic("38", ["6"], true, function($__require, exports, modul
   return module.exports;
 });
 
-$__System.registerDynamic("3", ["@node/path", "@node/url", "38", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("3", ["@node/path", "@node/url", "39", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
       GLOBAL = this;
   var path = $__require('@node/path');
   var url = $__require('@node/url');
-  var reduceUrls = $__require('38');
+  var reduceUrls = $__require('39');
   var isWindows = process.platform == 'win32';
   function isAbsolute(uri) {
     return uri[0] == '/';
@@ -7338,7 +7394,7 @@ $__System.registerDynamic("3", ["@node/path", "@node/url", "38", "6"], true, fun
   return module.exports;
 });
 
-$__System.registerDynamic("46", ["@node/buffer"], true, function($__require, exports, module) {
+$__System.registerDynamic("47", ["@node/buffer"], true, function($__require, exports, module) {
   ;
   var define,
       global = this,
@@ -7347,9 +7403,9 @@ $__System.registerDynamic("46", ["@node/buffer"], true, function($__require, exp
   return module.exports;
 });
 
-$__System.registerDynamic("48", ["@node/path", "3", "6", "46"], true, function($__require, exports, module) {
+$__System.registerDynamic("49", ["@node/path", "3", "6", "47"], true, function($__require, exports, module) {
   var process = $__require("6"),
-      Buffer = $__require("46");
+      Buffer = $__require("47");
   var define,
       global = this,
       GLOBAL = this;
@@ -7432,14 +7488,14 @@ $__System.registerDynamic("4", ["6"], true, function($__require, exports, module
   var define,
       global = this,
       GLOBAL = this;
-  function split(value, separator, includeSeparator, openLevel, closeLevel) {
+  function split(value, separator, includeSeparator, openLevel, closeLevel, firstOnly) {
     var withRegex = typeof separator != 'string';
     var hasSeparator = withRegex ? separator.test(value) : value.indexOf(separator);
     if (!hasSeparator)
       return [value];
     openLevel = openLevel || '(';
     closeLevel = closeLevel || ')';
-    if (value.indexOf(openLevel) == -1 && !includeSeparator)
+    if (value.indexOf(openLevel) == -1 && !includeSeparator && !firstOnly)
       return value.split(separator);
     var level = 0;
     var cursor = 0;
@@ -7455,6 +7511,9 @@ $__System.registerDynamic("4", ["6"], true, function($__require, exports, module
       if (level === 0 && cursor > 0 && cursor + 1 < len && (withRegex ? separator.test(value[cursor]) : value[cursor] == separator)) {
         tokens.push(value.substring(lastStart, cursor + (includeSeparator ? 1 : 0)));
         lastStart = cursor + 1;
+        if (firstOnly && tokens.length == 1) {
+          break;
+        }
       }
       cursor++;
     }
@@ -7471,7 +7530,7 @@ $__System.registerDynamic("4", ["6"], true, function($__require, exports, module
   return module.exports;
 });
 
-$__System.registerDynamic("49", ["4", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("4a", ["4", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
@@ -7641,7 +7700,7 @@ $__System.registerDynamic("5", ["6"], true, function($__require, exports, module
   return module.exports;
 });
 
-$__System.registerDynamic("4a", ["2", "7", "b", "f", "2e", "2f", "30", "32", "35", "36", "37", "39", "45", "47", "48", "49", "@node/fs", "@node/path", "@node/url", "5", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("4b", ["2", "7", "b", "f", "2f", "30", "31", "33", "36", "37", "38", "3a", "46", "48", "49", "4a", "@node/fs", "@node/path", "@node/url", "5", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
@@ -7650,18 +7709,18 @@ $__System.registerDynamic("4a", ["2", "7", "b", "f", "2e", "2f", "30", "32", "35
   var rebaseUrls = $__require('7');
   var tokenize = $__require('b');
   var simpleOptimize = $__require('f');
-  var advancedOptimize = $__require('2e');
-  var simpleStringify = $__require('2f');
-  var sourceMapStringify = $__require('30');
-  var CommentsProcessor = $__require('32');
-  var ExpressionsProcessor = $__require('35');
-  var FreeTextProcessor = $__require('36');
-  var UrlsProcessor = $__require('37');
-  var Compatibility = $__require('39');
-  var InputSourceMapTracker = $__require('45');
-  var SourceTracker = $__require('47');
-  var SourceReader = $__require('48');
-  var Validator = $__require('49');
+  var advancedOptimize = $__require('2f');
+  var simpleStringify = $__require('30');
+  var sourceMapStringify = $__require('31');
+  var CommentsProcessor = $__require('33');
+  var ExpressionsProcessor = $__require('36');
+  var FreeTextProcessor = $__require('37');
+  var UrlsProcessor = $__require('38');
+  var Compatibility = $__require('3a');
+  var InputSourceMapTracker = $__require('46');
+  var SourceTracker = $__require('48');
+  var SourceReader = $__require('49');
+  var Validator = $__require('4a');
   var fs = $__require('@node/fs');
   var path = $__require('@node/path');
   var url = $__require('@node/url');
@@ -7815,7 +7874,7 @@ $__System.registerDynamic("4a", ["2", "7", "b", "f", "2e", "2f", "30", "32", "35
     var tokens = tokenize(data, context);
     simpleOptimize(tokens, options);
     if (options.advanced)
-      advancedOptimize(tokens, options, context.validator, true);
+      advancedOptimize(tokens, options, context, true);
     return stringify(tokens, options, restoreEscapes, context.inputSourceMapTracker);
   }
   return module.exports;
@@ -7825,28 +7884,31 @@ $__System.registerDynamic("@system-env", [], false, function() {
   return {
     "production": true,
     "browser": false,
-    "node": true
+    "node": true,
+    "dev": false,
+    "default": true
   };
 });
 
-$__System.registerDynamic("6", ["@system-env"], true, function($__require, exports, module) {
+$__System.registerDynamic("6", ["@system-env", "@node/process"], true, function($__require, exports, module) {
   ;
   var define,
       global = this,
       GLOBAL = this;
   var productionEnv = $__require('@system-env').production;
+  var process = $__require('@node/process');
   var pEnv = process.env;
   pEnv.NODE_ENV = productionEnv ? 'production' : 'development';
-  module.exports = global.process;
+  module.exports = process;
   return module.exports;
 });
 
-$__System.registerDynamic("1", ["4a", "6"], true, function($__require, exports, module) {
+$__System.registerDynamic("1", ["4b", "6"], true, function($__require, exports, module) {
   var process = $__require("6");
   var define,
       global = this,
       GLOBAL = this;
-  module.exports = $__require('4a');
+  module.exports = $__require('4b');
   return module.exports;
 });
 
@@ -7859,3 +7921,4 @@ $__System.registerDynamic("1", ["4a", "6"], true, function($__require, exports, 
   else
     factory();
 });
+//# sourceMappingURL=clean-css.js.map
