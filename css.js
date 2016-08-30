@@ -109,9 +109,10 @@ else {
   }
 
   exports.cssPlugin = true;
-  exports.fetch = function(load) {
+  exports.fetch = function(load, fetch) {
     if (!this.builder)
       return '';
+    return fetch(load);
   };
   exports.translate = function(load, opts) {
     if (!this.builder)
