@@ -16,5 +16,8 @@
     "sinon-chai": "^2.8.0",
     "systemjs": "^0.19.28",
     "systemjs-builder": "^0.15.17"
+  },
+  "scripts": {
+    "phantom-test": "phantomjs test/phantom.js"
   }
 }

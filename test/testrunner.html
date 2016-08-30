@@ -13,20 +13,24 @@
     <script>
       // Set up the test framework
       System.import('./mocha-setup.js')
-      .then(function(setup){
+      .then(function(setup) {
         return setup(window)
       })
-      .then(function(){
-          return Promise.all([
-            // add your tests to this array
-            System.import('test/css.browser.spec.js')
-          ])
+      .then(function() {
+        return Promise.all([
+          // add your tests to this array
+          System.import('test/css.browser.spec.js')
+        ]);
       })
-      .then(function(){
+      .then(function() {
         // Run the tests after they are imported
-        mocha.run();
+        mocha.run(function(failures) {
+          console.log('Done');
+        });
       })
-      .catch(function(err){console.error(err.stack)})
+      .catch(function(err) {
+        console.log(err);
+      });
     </script>
   </body>
 </html>
