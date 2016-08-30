@@ -109,13 +109,21 @@ else {
   }
 
   exports.cssPlugin = true;
+  exports.fetch = function(load) {
+    if (!this.builder)
+      return '';
+  };
   exports.translate = function(load, opts) {
+    if (!this.builder)
+      return '';
     var loader = this;
     return getBuilder(loader).then(function(builder) {
       return builder.translate.call(loader, load, opts);
     });
   };
   exports.instantiate = function(load, opts) {
+    if (!this.builder)
+      return;
     var loader = this;
     return getBuilder(loader).then(function(builder) {
       return builder.instantiate.call(loader, load, opts);
