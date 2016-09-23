@@ -70,7 +70,8 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
     new CleanCSS({
       sourceMap: true,
       target: outFile,
-      root: loader.rootURL && path.resolve(loader.rootURL)
+      root: loader.rootURL && path.resolve(loader.rootURL),
+      relativeTo: fromFileURL(loader.baseURL)
     }).minify(inputFiles, function(err, minified) {
       if (err)
         return reject(err);
