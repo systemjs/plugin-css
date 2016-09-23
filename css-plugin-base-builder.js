@@ -64,6 +64,7 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
       sourceMap: load.metadata.styleSourceMap
     };
   });
+  cssLoads = [];
 
   return new Promise(function(resolve, reject) {
     new CleanCSS({
@@ -93,8 +94,9 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
       fs.writeFileSync(outFile, cssOutput);
     }
     else {
-      // NB do data-encoding of css source map for non separateCSS case?
-      // cssOutput += '/*# sourceMappingURL=data,''
+      if (outputOpts.sourceMaps) {
+        cssOutput += '/*# sourceMappingURL=data:application/json;base64,' + new Buffer(result.map.toString()).toString('base64') + '*/';
+      }
       return cssInject + '\n("' + escape(cssOutput) + '");';
     }
   });
