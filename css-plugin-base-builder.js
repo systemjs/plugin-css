@@ -95,9 +95,11 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
       fs.writeFileSync(outFile, cssOutput);
     }
     else {
-      if (outputOpts.sourceMaps) {
-        cssOutput += '/*# sourceMappingURL=data:application/json;base64,' + new Buffer(result.map.toString()).toString('base64') + '*/';
-      }
+      // disabled pending https://bugs.chromium.org/p/chromium/issues/detail?id=649679&can=2&q=css%20source%20maps
+      //if (outputOpts.sourceMaps) {
+      //  NB rebase source map paths to output path
+      //  cssOutput += '\n/*# sourceMappingURL=data:application/json;base64,' + new Buffer(result.map.toString()).toString('base64') + '*/';
+      //}
       return cssInject + '\n("' + escape(cssOutput) + '");';
     }
   });
