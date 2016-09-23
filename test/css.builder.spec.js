@@ -24,5 +24,14 @@ describe('CSS Builder', function() {
 				return expect(results.source).to.contain("body{background-color:red;background-image:url(/data/x.png)}");
 			});
 		});
+
+		it('Should support buildCSS: false', function() {
+			var builder = new Builder();
+			builder.config(System.getConfig());
+			builder.config({ buildCSS: false });
+			return builder.bundle('test/data/test.css!', {minify: false}).then(function(results) {
+				return expect(results.source).to.equal('');
+			});
+		})
 	});
 });

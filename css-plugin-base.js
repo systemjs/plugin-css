@@ -6,9 +6,13 @@ function CSSPluginBase(compileCSS) {
   this.compileCSS = compileCSS;
 
   this.translate = function(load, opts) {
-    var path = this._nodeRequire && this._nodeRequire('path');
-
     var loader = this;
+    if (loader.builder && loader.buildCSS === false) {
+      load.metadata.build = false;
+      return;
+    }
+
+    var path = this._nodeRequire && this._nodeRequire('path');
 
     return Promise.resolve(compileCSS.call(loader, load.source, load.address, load.metadata.loaderOptions || {}))
     .then(function(result) {
