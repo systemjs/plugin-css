@@ -2,7 +2,8 @@ var CleanCSS = require('./clean-css.js');
 var fs = require('@node/fs');
 var path = require('@node/path');
 
-var cssInject = "(function(c){if (typeof document == 'undefined') return; var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})";
+var cssInject = "(function(c){if (typeof document == 'undefined') return; var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[a](d.createTextNode(c));})";
+var cssInjectSourceMaps = "(function(c){if (typeof document == 'undefined') return;var d=document,a='appendChild',s=d.createElement('link');s.rel='stylesheet';s.href='data:text/css;base64,' + btoa(unescape(encodeURIComponent(c)));d.getElementsByTagName('head')[0][a](s);})";
 
 function escape(source) {
   return source
@@ -95,12 +96,15 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
       fs.writeFileSync(outFile, cssOutput);
     }
     else {
-      // disabled pending https://bugs.chromium.org/p/chromium/issues/detail?id=649679&can=2&q=css%20source%20maps
-      //if (outputOpts.sourceMaps) {
-      //  NB rebase source map paths to output path
-      //  cssOutput += '\n/*# sourceMappingURL=data:application/json;base64,' + new Buffer(result.map.toString()).toString('base64') + '*/';
-      //}
-      return cssInject + '\n("' + escape(cssOutput) + '");';
+      // this can be disabled pending https://bugs.chromium.org/p/chromium/issues/detail?id=649679&can=2&q=css%20source%20maps
+      if (outputOpts.sourceMaps && loader.inlineCssSourceMaps) {
+        var sourceMap = JSON.parse(result.map.toString());
+        cssOutput += '\n/*# sourceMappingURL=data:application/json;base64,' + new Buffer(JSON.stringify(sourceMap)).toString('base64') + '*/';
+        return cssInjectSourceMaps + '\n("' + escape(cssOutput) + '");';
+      }
+      else {
+        return cssInject + '\n("' + escape(cssOutput) + '");';
+      }
     }
   });
 };
