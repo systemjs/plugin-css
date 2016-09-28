@@ -1,0 +1,62 @@
+{
+  "jspm": {
+    "name": "app",
+    "main": "app.js",
+    "dependencies": {
+      "autoprefixer": "npm:autoprefixer@^6.5.0",
+      "cssnano": "npm:cssnano@^3.7.5",
+      "postcss": "npm:postcss@^5.2.2",
+      "postcss-import": "github:guybedford/postcss-import@feature/load-source-maps",
+      "postcss-url": "npm:postcss-url@^5.1.2"
+    },
+    "devDependencies": {
+      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.15"
+    },
+    "peerDependencies": {
+      "assert": "github:jspm/nodelibs-assert@^0.2.0-alpha",
+      "buffer": "github:jspm/nodelibs-buffer@^0.2.0-alpha",
+      "child_process": "github:jspm/nodelibs-child_process@^0.2.0-alpha",
+      "cluster": "github:jspm/nodelibs-cluster@^0.2.0-alpha",
+      "constants": "github:jspm/nodelibs-constants@^0.2.0-alpha",
+      "crypto": "github:jspm/nodelibs-crypto@^0.2.0-alpha",
+      "events": "github:jspm/nodelibs-events@^0.2.0-alpha",
+      "fs": "github:jspm/nodelibs-fs@^0.2.0-alpha",
+      "graceful-fs": "npm:graceful-fs@^4.1.6",
+      "http": "github:jspm/nodelibs-http@^0.2.0-alpha",
+      "module": "github:jspm/nodelibs-module@^0.2.0-alpha",
+      "os": "github:jspm/nodelibs-os@^0.2.0-alpha",
+      "path": "github:jspm/nodelibs-path@^0.2.0-alpha",
+      "process": "github:jspm/nodelibs-process@^0.2.0-alpha",
+      "punycode": "github:jspm/nodelibs-punycode@^0.2.0-alpha",
+      "stream": "github:jspm/nodelibs-stream@^0.2.0-alpha",
+      "string_decoder": "github:jspm/nodelibs-string_decoder@^0.2.0-alpha",
+      "uglify-js": "npm:uglify-js@~2.3",
+      "url": "github:jspm/nodelibs-url@^0.2.0-alpha",
+      "util": "github:jspm/nodelibs-util@^0.2.0-alpha",
+      "vm": "github:jspm/nodelibs-vm@^0.2.0-alpha"
+    },
+    "overrides": {
+      "github:guybedford/postcss-import@feature/load-source-maps": {
+        "registry": "npm",
+        "dependencies": {
+          "object-assign": "^4.0.1",
+          "postcss": "^5.0.14",
+          "postcss-value-parser": "^3.2.3",
+          "read-cache": "^1.0.0",
+          "resolve": "^1.1.7"
+        },
+        "map": {
+          "pkg-resolve": "@empty"
+        }
+      },
+      "npm:esprima@2.7.3": {
+        "jspmNodeConversion": false
+      },
+      "npm:inherits@2.0.3": {
+        "ignore": [
+          "test.js"
+        ]
+      }
+    }
+  }
+}

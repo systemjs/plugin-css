@@ -5,7 +5,7 @@
   "registry": "jspm",
   "scripts": {
   	"test": "mocha --harmony test/test.js",
-    "build": "cd build-clean-css && jspm build clean-css --node ../clean-css.js"
+    "build": "cd build-post-css && ./build.sh"
   },
   "devDependencies": {
     "chai": "^3.5.0",

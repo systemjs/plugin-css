@@ -1,9 +1,16 @@
-var CleanCSS = require('./clean-css.js');
 var fs = require('@node/fs');
 var path = require('@node/path');
 
+var postCssBundle = require('./postcss-bundle.js');
+
+var postcss = postCssBundle.postcss;
+var autoprefixer = postCssBundle.autoprefixer;
+var cssnano = postCssBundle.cssnano;
+var atImport = postCssBundle.atImport;
+var atUrl = postCssBundle.atUrl;
+
 var cssInject = "(function(c){if (typeof document == 'undefined') return; var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[a](d.createTextNode(c));})";
-var cssInjectSourceMaps = "(function(c){if (typeof document == 'undefined') return;var d=document,a='appendChild',s=d.createElement('link');s.rel='stylesheet';s.href='data:text/css;base64,' + btoa(unescape(encodeURIComponent(c)));d.getElementsByTagName('head')[0][a](s);})";
+var cssInjectSourceMaps = "(function(c){if (typeof document == 'undefined') return;var d=document,a='appendChild',s=d.createElement('link');s.rel='stylesheet';s.href=URL.createObjectURL(new Blob([c],{type:'text/css'}));d.getElementsByTagName('head')[0][a](s);})";
 
 function escape(source) {
   return source
@@ -53,35 +60,91 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
   if (loader.rootURL && loader.rootURL.substr(0, 5) == 'file:')
     loader.rootURL = fromFileURL(loader.rootURL);
 
+  if (loader.browserRootURL && loader.browserRootURL[loader.browserRootURL.length - 1] !== '/')
+    loader.browserRootURL += '/';
+
   // reset for next
   bundleCnt = listAssetsCnt = 0;
 
-  var outFile = loader.separateCSS ? path.resolve(outputOpts.outFile).replace(/\.js$/, '.css') : loader.rootURL && path.resolve(loader.rootURL) || fromFileURL(loader.baseURL);
+  var baseURLPath = fromFileURL(loader.baseURL);
 
   var inputFiles = {};
   cssLoads.forEach(function(load) {
-    inputFiles[fromFileURL(load.address)] = {
-      styles: load.metadata.style,
+    inputFiles[path.relative(baseURLPath, fromFileURL(load.address))] = {
+      source: load.metadata.style,
       sourceMap: load.metadata.styleSourceMap
     };
   });
   cssLoads = [];
 
-  return new Promise(function(resolve, reject) {
-    new CleanCSS({
-      sourceMap: true,
-      target: outFile,
-      root: loader.rootURL && path.resolve(loader.rootURL),
-      relativeTo: fromFileURL(loader.baseURL)
-    }).minify(inputFiles, function(err, minified) {
-      if (err)
-        return reject(err);
+  var absRegEx = /^[a-z]+:/;
+  function absUrl(url) {
+    return url[0] !== '.' && (url.match(absRegEx) || url[0] === '/');
+  }
 
-      return resolve({
-        css: minified.styles,
-        map: minified.sourceMap.toString()
-      });
-    });
+  var cwd = process.cwd();
+
+  return postcss([atImport({
+    resolve: function(fileName, dirname, opts) {
+      if (absUrl(fileName))
+        return fileName;
+      return path.relative(baseURLPath, path.join(dirname, fileName));
+    },
+    load: function(fileName, opts) {
+      if (absUrl(fileName))
+        return;
+
+      var file = inputFiles[fileName];
+
+      if (!file) {
+        console.log(fileName + ' not found! TODO: ensure these imports are normalized correctly.');
+        return;
+      }
+
+      var sourceMap = file.sourceMap;
+      if (sourceMap) {
+        if (typeof sourceMap === 'string')
+          sourceMap = JSON.parse(sourceMap);
+
+        // normalize input sources to use absolute file paths
+        // do we still need this?
+        sourceMap.sources = sourceMap.sources.map(source => {
+          if (source.match(absRegEx))
+            return source;
+          if (source[0] !== '/')
+            return path.resolve(path.dirname(path.resolve(baseURLPath, fileName)), source);
+          return source;
+        });
+
+        file.sourceMap = sourceMap;
+      }
+
+      return file;
+    }
+  }), atUrl({
+    url: function(fileName, decl, from, dirname, to, options, result) {
+      if (absUrl(fileName))
+        return fileName;
+
+      // dirname may be renormalized to cwd
+      if (dirname.substr(0, cwd.length + 1) === cwd + path.sep)
+        dirname = path.resolve(baseURLPath, dirname.substr(cwd.length + 1));
+
+      if (loader.rootURL)
+        return (loader.browserRootURL || '/') + path.relative(loader.rootURL, path.join(dirname, fileName)).replace(/\\/g, '/');
+      else
+        return path.relative(baseURLPath, path.join(dirname, fileName)).replace(/\\/g, '/');
+    }
+  }), autoprefixer, cssnano({
+    normalizeUrl: false
+  })])
+  .process(Object.keys(inputFiles).map(name => '@import "' + name + '";').join('\n'), {
+    from: path.join(baseURLPath, '__.css'),
+    to: cwd + path.sep + '__.css',
+    map: {
+      inline: false,
+      sourcesContent: false
+    }
   })
   .then(function(result) {
     var cssOutput = result.css;
@@ -89,6 +152,7 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
     // write a separate CSS file if necessary
     if (loader.separateCSS) {
       if (outputOpts.sourceMaps) {
+        var outFile = path.resolve(outputOpts.outFile).replace(/\.js$/, '.css');
         fs.writeFileSync(outFile + '.map', result.map.toString());
         cssOutput += '\n/*# sourceMappingURL=' + outFile.split(/[\\/]/).pop() + '.map*/';
       }
@@ -99,6 +163,16 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
       // this can be disabled pending https://bugs.chromium.org/p/chromium/issues/detail?id=649679&can=2&q=css%20source%20maps
       if (outputOpts.sourceMaps && loader.inlineCssSourceMaps) {
         var sourceMap = JSON.parse(result.map.toString());
+        sourceMap.sources = sourceMap.sources.map(source => {
+          if (source.match(absRegEx))
+            return source;
+          if (source[0] !== '/')
+            source = path.resolve(baseURLPath, source);
+          if (loader.rootURL)
+            return (loader.browserRootURL || '/') + path.relative(loader.rootURL, source).replace(/\\/g, '/');
+          else
+            return path.relative(baseURLPath, source).replace(/\\/g, '/');
+        });
         cssOutput += '\n/*# sourceMappingURL=data:application/json;base64,' + new Buffer(JSON.stringify(sourceMap)).toString('base64') + '*/';
         return cssInjectSourceMaps + '\n("' + escape(cssOutput) + '");';
       }
