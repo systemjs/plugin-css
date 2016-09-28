@@ -84,7 +84,7 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
 
   var cwd = process.cwd();
 
-  return postcss([atImport({
+  var postCssPlugins = [atImport({
     resolve: function(fileName, dirname, opts) {
       if (absUrl(fileName))
         return fileName;
@@ -134,9 +134,14 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
       else
         return path.relative(baseURLPath, path.join(dirname, fileName)).replace(/\\/g, '/');
     }
-  }), autoprefixer, cssnano({
-    normalizeUrl: false
-  })])
+  }), autoprefixer];
+
+  if (loader.cssNano !== false)
+    postCssPlugins.push(cssnano({
+      normalizeUrl: false
+    }));
+
+  return postcss(postCssPlugins)
   .process(Object.keys(inputFiles).map(name => '@import "' + name + '";').join('\n'), {
     from: path.join(baseURLPath, '__.css'),
     to: cwd + path.sep + '__.css',
