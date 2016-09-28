@@ -107,7 +107,6 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
           sourceMap = JSON.parse(sourceMap);
 
         // normalize input sources to use absolute file paths
-        // do we still need this?
         sourceMap.sources = sourceMap.sources.map(source => {
           if (source.match(absRegEx))
             return source;
