@@ -155,8 +155,8 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
 
     // write a separate CSS file if necessary
     if (loader.separateCSS) {
+      var outFile = path.resolve(outputOpts.outFile).replace(/\.js$/, '.css');
       if (outputOpts.sourceMaps) {
-        var outFile = path.resolve(outputOpts.outFile).replace(/\.js$/, '.css');
         fs.writeFileSync(outFile + '.map', result.map.toString());
         cssOutput += '\n/*# sourceMappingURL=' + outFile.split(/[\\/]/).pop() + '.map*/';
       }
