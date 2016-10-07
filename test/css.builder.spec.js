@@ -33,5 +33,14 @@ describe('CSS Builder', function() {
 				return expect(results.source).to.equal('');
 			});
 		})
+
+		it('Should support separateCSS: true and sourceMaps: false', function() {
+			var builder = new Builder();
+			builder.config(System.getConfig());
+			builder.config({ separateCSS: true });
+			return builder.bundle('test/data/test.css!', {sourceMaps: false, minify: false, outFile: 'test/bundle.js'}).then((results) => {
+				return expect(results.source).to.contain("test/data/test.css!css.js");
+			});
+		})
 	});
 });
