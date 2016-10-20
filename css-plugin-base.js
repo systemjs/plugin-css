@@ -58,8 +58,8 @@ CSSPluginBase.prototype.listAssets = function(loads, opts) {
  */
 // NB hot reloading support here
 CSSPluginBase.prototype.instantiate = function(load) {
-  if (this.builder)
-    return;
+  if (this.builder || typeof document === 'undefined')
+      return;
 
   var style = document.createElement('style');
   style.type = 'text/css';
