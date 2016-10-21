@@ -138,6 +138,7 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
 
   if (loader.cssNano !== false)
     postCssPlugins.push(cssnano({
+      safe: true,
       normalizeUrl: false
     }));
 
