@@ -143,7 +143,7 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
     }));
 
   return postcss(postCssPlugins)
-  .process(Object.keys(inputFiles).map(name => '@import "' + name + '";').join('\n'), {
+  .process(Object.keys(inputFiles).map(name => '@import "' + name.replace(/\\/g, '/') + '";').join('\n'), {
     from: path.join(baseURLPath, '__.css'),
     to: cwd + path.sep + '__.css',
     map: {
