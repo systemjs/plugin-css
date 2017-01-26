@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "postinstall": "node_modules/.bin/jspm install",
+    "build": "node_modules/.bin/jspm build postcss-bundle.js ../postcss-bundle.js --node --format amd --skip-source-maps"
+  },
   "jspm": {
     "name": "app",
     "main": "app.js",
@@ -13,27 +17,27 @@
       "plugin-babel": "npm:systemjs-plugin-babel@^0.0.15"
     },
     "peerDependencies": {
-      "assert": "github:jspm/nodelibs-assert@^0.2.0-alpha",
-      "buffer": "github:jspm/nodelibs-buffer@^0.2.0-alpha",
-      "child_process": "github:jspm/nodelibs-child_process@^0.2.0-alpha",
-      "cluster": "github:jspm/nodelibs-cluster@^0.2.0-alpha",
-      "constants": "github:jspm/nodelibs-constants@^0.2.0-alpha",
-      "crypto": "github:jspm/nodelibs-crypto@^0.2.0-alpha",
-      "events": "github:jspm/nodelibs-events@^0.2.0-alpha",
-      "fs": "github:jspm/nodelibs-fs@^0.2.0-alpha",
+      "assert": "npm:jspm-nodelibs-assert@^0.2.0",
+      "buffer": "npm:jspm-nodelibs-buffer@^0.2.0",
+      "child_process": "npm:jspm-nodelibs-child_process@^0.2.0",
+      "cluster": "npm:jspm-nodelibs-cluster@^0.2.0",
+      "constants": "npm:jspm-nodelibs-constants@^0.2.0",
+      "crypto": "npm:jspm-nodelibs-crypto@^0.2.0",
+      "events": "npm:jspm-nodelibs-events@^0.2.0",
+      "fs": "npm:jspm-nodelibs-fs@^0.2.0",
       "graceful-fs": "npm:graceful-fs@^4.1.6",
-      "http": "github:jspm/nodelibs-http@^0.2.0-alpha",
-      "module": "github:jspm/nodelibs-module@^0.2.0-alpha",
-      "os": "github:jspm/nodelibs-os@^0.2.0-alpha",
-      "path": "github:jspm/nodelibs-path@^0.2.0-alpha",
-      "process": "github:jspm/nodelibs-process@^0.2.0-alpha",
-      "punycode": "github:jspm/nodelibs-punycode@^0.2.0-alpha",
-      "stream": "github:jspm/nodelibs-stream@^0.2.0-alpha",
-      "string_decoder": "github:jspm/nodelibs-string_decoder@^0.2.0-alpha",
+      "http": "npm:jspm-nodelibs-http@^0.2.0",
+      "module": "npm:jspm-nodelibs-module@^0.2.0",
+      "os": "npm:jspm-nodelibs-os@^0.2.0",
+      "path": "npm:jspm-nodelibs-path@^0.2.0",
+      "process": "npm:jspm-nodelibs-process@^0.2.0",
+      "punycode": "npm:jspm-nodelibs-punycode@^0.2.0",
+      "stream": "npm:jspm-nodelibs-stream@^0.2.0",
+      "string_decoder": "npm:jspm-nodelibs-string_decoder@^0.2.0",
       "uglify-js": "npm:uglify-js@~2.3",
-      "url": "github:jspm/nodelibs-url@^0.2.0-alpha",
-      "util": "github:jspm/nodelibs-util@^0.2.0-alpha",
-      "vm": "github:jspm/nodelibs-vm@^0.2.0-alpha"
+      "url": "npm:jspm-nodelibs-url@^0.2.0",
+      "util": "npm:jspm-nodelibs-util@^0.2.0",
+      "vm": "npm:jspm-nodelibs-vm@^0.2.0"
     },
     "overrides": {
       "github:guybedford/postcss-import@feature/load-source-maps": {
@@ -56,7 +60,60 @@
         "ignore": [
           "test.js"
         ]
+      },
+      "npm:svgo@0.7.1": {
+        "meta": {
+          "lib/svgo/config.js": {
+            "deps": [
+              "../../plugins/removeDoctype",
+              "../../plugins/removeXMLProcInst",
+              "../../plugins/removeComments",
+              "../../plugins/removeMetadata",
+              "../../plugins/removeEditorsNSData",
+              "../../plugins/cleanupAttrs",
+              "../../plugins/minifyStyles",
+              "../../plugins/convertStyleToAttrs",
+              "../../plugins/cleanupIDs",
+              "../../plugins/removeRasterImages",
+              "../../plugins/removeUselessDefs",
+              "../../plugins/cleanupNumericValues",
+              "../../plugins/cleanupListOfValues",
+              "../../plugins/convertColors",
+              "../../plugins/removeUnknownsAndDefaults",
+              "../../plugins/removeNonInheritableGroupAttrs",
+              "../../plugins/removeUselessStrokeAndFill",
+              "../../plugins/removeViewBox",
+              "../../plugins/cleanupEnableBackground",
+              "../../plugins/removeHiddenElems",
+              "../../plugins/removeEmptyText",
+              "../../plugins/convertShapeToPath",
+              "../../plugins/moveElemsAttrsToGroup",
+              "../../plugins/moveGroupAttrsToElems",
+              "../../plugins/collapseGroups",
+              "../../plugins/convertPathData",
+              "../../plugins/convertTransform",
+              "../../plugins/removeEmptyAttrs",
+              "../../plugins/removeEmptyContainers",
+              "../../plugins/mergePaths",
+              "../../plugins/removeUnusedNS",
+              "../../plugins/transformsWithOnePath",
+              "../../plugins/sortAttrs",
+              "../../plugins/removeTitle",
+              "../../plugins/removeDesc",
+              "../../plugins/removeDimensions",
+              "../../plugins/removeAttrs",
+              "../../plugins/addClassesToSVGElement",
+              "../../plugins/removeStyleElement",
+              "../../plugins/removeXMLNS",
+              "../../plugins/removeElementsByAttr",
+              "../../plugins/addAttributesToSVGElement"
+            ]
+          }
+        }
       }
     }
+  },
+  "devDependencies": {
+    "jspm": "^0.17.0-beta.34"
   }
 }
