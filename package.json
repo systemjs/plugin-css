@@ -1,6 +1,6 @@
 {
   "name": "systemjs-plugin-css",
-  "version": "0.1.32",
+  "version": "0.1.33",
   "main": "css",
   "registry": "jspm",
   "scripts": {
