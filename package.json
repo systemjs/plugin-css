@@ -4,7 +4,6 @@
   "main": "css",
   "registry": "jspm",
   "scripts": {
-    "postinstall": "cd build-post-css && npm install",
     "test": "mocha --harmony test/test.js",
     "build": "cd build-post-css && npm run build",
     "phantom-test": "phantomjs test/phantom.js"
