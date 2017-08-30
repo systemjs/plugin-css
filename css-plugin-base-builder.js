@@ -122,7 +122,7 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
     }
   }), atUrl({
     url: function(fileName, decl, from, dirname, to, options, result) {
-      if (absUrl(fileName) || fileName.match(/^%23/))
+      if ((absUrl(fileName) && fileName.charAt(0) !== '/') || fileName.match(/^%23/))
         return fileName;
 
       // dirname may be renormalized to cwd
@@ -130,7 +130,11 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
         dirname = path.resolve(baseURLPath, dirname.substr(cwd.length + 1));
 
       if (loader.rootURL)
-        return (loader.browserRootURL || '/') + path.relative(loader.rootURL, path.join(dirname, fileName)).replace(/\\/g, '/');
+        if (fileName.charAt(0) === '/') {
+          return (loader.browserRootURL || '/') + fileName.replace(/\\/g, '/').replace(/\//, '');
+        } else {
+          return (loader.browserRootURL || '/') + path.relative(loader.rootURL, path.join(dirname, fileName)).replace(/\\/g, '/');
+        }
       else
         return path.relative(baseURLPath, path.join(dirname, fileName)).replace(/\\/g, '/');
     }
