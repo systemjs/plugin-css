@@ -51,6 +51,15 @@ describe('CSS Builder', function() {
 			});
 		});
 
+		// https://github.com/systemjs/plugin-css/pull/135#commitcomment-24415595
+		it('should handle a root-relative url when no rootURL and no browserRootURL are configured', function () {
+			var builder = new Builder();
+			builder.config(System.getConfig());
+			return builder.compile('test/data/rootRelative.css!', {minify: false}).then((results) => {
+				return expect(results.source).to.contain("body{background-color:red;background-image:url(/path/to/x.png)}");
+			});
+		});
+
 		it('Should support buildCSS: false', function() {
 			var builder = new Builder();
 			builder.config(System.getConfig());
