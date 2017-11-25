@@ -25,6 +25,32 @@ describe('CSS Builder', function() {
 			});
 		});
 
+		describe('with a browserRootURL config', function () {
+			it('should preprend it to a relative url(...) reference', function () {
+				var builder = new Builder();
+				builder.config(System.getConfig());
+				builder.config({
+					browserRootURL: 'https://example.com/',
+					rootURL: './test'
+				});
+				return builder.compile('test/data/test.css!', {minify: false}).then((results) => {
+					return expect(results.source).to.contain("body{background-color:red;background-image:url(https://example.com/data/x.png)}");
+				});
+			});
+
+			it('should preprend it to a root-relative url(...) reference', function () {
+				var builder = new Builder();
+				builder.config(System.getConfig());
+				builder.config({
+					browserRootURL: 'https://example.com/',
+					rootURL: './test'
+				});
+				return builder.compile('test/data/rootRelative.css!', {minify: false}).then((results) => {
+					return expect(results.source).to.contain("body{background-color:red;background-image:url(https://example.com/path/to/x.png)}");
+				});
+			});
+		});
+
 		it('Should support buildCSS: false', function() {
 			var builder = new Builder();
 			builder.config(System.getConfig());
