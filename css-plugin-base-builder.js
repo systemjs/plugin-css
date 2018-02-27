@@ -122,7 +122,7 @@ exports.bundle = function(loads, compileOpts, outputOpts) {
     }
   }), atUrl({
     url: function(fileName, decl, from, dirname, to, options, result) {
-      if ((absUrl(fileName) && fileName.charAt(0) !== '/') || fileName.match(/^%23/))
+      if ((absUrl(fileName) && (!loader.browserRootURL || fileName.charAt(0) !== '/')) || fileName.match(/^%23/))
         return fileName;
 
       // dirname may be renormalized to cwd
