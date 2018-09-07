@@ -57,14 +57,51 @@ CSSPluginBase.prototype.listAssets = function(loads, opts) {
  * <style> injection browser plugin
  */
 // NB hot reloading support here
+
+function cssInject(style, css) {
+  if (style) {
+      style.innerHTML = css;
+  } else {
+    style = document.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML = css;
+    document.head.appendChild(style);
+  }
+  return style;
+}
+
+// NB the <link> + blob URL trick is required to make chrome detect the source maps
+function cssInjectSourceMaps(link, css) {
+  var href = URL.createObjectURL(new Blob([css], { type:'text/css' }));;
+  if (link) {
+    link.href = href;
+  } else {
+    link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    document.head.appendChild(link);
+  }
+  return link;
+}
+
+var elementsContainerKey = '__CSSPluginBase.elements';
 CSSPluginBase.prototype.instantiate = function(load) {
   if (this.builder || typeof document === 'undefined')
       return;
 
-  var style = document.createElement('style');
-  style.type = 'text/css';
-  style.innerHTML = load.metadata.style;
-  document.head.appendChild(style);
+  var enableInlineSourceMaps = this.inlineCssSourceMaps && load.metadata.styleSourceMap;
+  var cssElements = document[elementsContainerKey] || (document[elementsContainerKey] = {});
+  var element = cssElements[load.address];
+
+  if (!enableInlineSourceMaps) {
+    cssElements[load.address] = cssInject(element, load.metadata.style);
+  } else {
+    var cssOutput = load.metadata.style
+      + '\n/*# sourceMappingURL=data:application/json,'
+      + encodeURIComponent(load.metadata.styleSourceMap) + '*/';
+
+    cssElements[load.address] = cssInjectSourceMaps(element, cssOutput);
+  }
 };
 
 module.exports = CSSPluginBase;
